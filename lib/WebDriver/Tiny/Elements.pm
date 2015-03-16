@@ -3,6 +3,12 @@ package WebDriver::Tiny::Elements 0.001;
 use strict;
 use warnings;
 
+# Manip
+sub first { bless [ @{ $_[0] }[ 0,  1 ] ] }
+sub last  { bless [ @{ $_[0] }[ 0, -1 ] ] }
+sub size  { $#{ $_[0] } }
+sub slice { my ( $drv, @ids ) = @{ +shift }; bless [ $drv, @ids[@_] ] }
+
 sub attr { $_[0]->_req( GET => "/attribute/$_[1]" )->{value} }
 sub css  { $_[0]->_req( GET =>       "/css/$_[1]" )->{value} }
 
@@ -18,52 +24,6 @@ sub visible  { $_[0]->_req( GET => '/displayed' )->{value} }
 
 *find       = \&WebDriver::Tiny::find;
 *screenshot = \&WebDriver::Tiny::screenshot;
-
-sub first {
-    my $self = $_[0];
-
-    $#$self = 1;
-
-    $self;
-}
-
-sub last {
-    my $self = $_[0];
-
-    $self->[1] = $self->[-1];
-
-    $#$self = 1;
-
-    $self;
-}
-
-# FIXME Is this a sane name? size? count? total?
-sub len { $#{ $_[0] } }
-
-sub shuffle {
-    my $self = $_[0];
-    my ( $drv, @ids ) = @$self;
-
-    $#$self = 0;
-
-    require List::Util;
-
-    push @$self, List::Util::shuffle @ids;
-
-    $self;
-}
-
-# TODO Bench/optimise this.
-sub slice {
-    my ( $self, @slice ) = @_;
-    my ( $drv, @ids )    = @$self;
-
-    $#$self = 0;
-
-    push @$self, @ids[@slice];
-
-    $self;
-}
 
 sub send_keys {
     my ( $self, @keys ) = @_;
