@@ -42,11 +42,13 @@ sub new {
     my $self = bless [
         # FIXME Keep alive can make PhantomJS return a 400 bad request :-S.
         HTTP::Tiny->new( keep_alive => 0 ),
-        "http://$args{host}:$args{port}/session",
+        "http://$args{host}:$args{port}/wd/hub/session",
     ], $class;
 
-    $self->[1] .= '/' .
-        $self->_req( POST => '', { desiredCapabilities => {} } )->{sessionId};
+    $self->[1] .= '/' . $self->_req(
+        POST => '',
+        { desiredCapabilities => { browserName => 'firefox' } },
+    )->{sessionId};
 
     $self;
 }
