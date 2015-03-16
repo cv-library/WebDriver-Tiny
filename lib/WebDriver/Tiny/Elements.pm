@@ -119,6 +119,6 @@ sub text {
 }
 
 # Call driver's ->_req, prepend "/element/:id" to the path first.
-sub _req { $_[0][0]->_req( $_[1], "/element/$_[0][1]$_[2]" ) }
+sub _req { $_[0][0]->_req( $_[1], "/element/$_[0][1]$_[2]", $_[3] ) }
 
 1;

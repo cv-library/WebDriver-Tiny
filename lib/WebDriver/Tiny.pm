@@ -74,7 +74,6 @@ my %methods = (
 );
 
 # NOTE This method can be called from a driver or a collection of elements.
-# TODO This doesn't yet work when called from a collection of elements.
 sub find {
     my ( $self, $selector, %args ) = @_;
 
@@ -108,7 +107,11 @@ sub find {
         Carp::croak ref $self, ' - Elements not found'
     }
 
-    bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
+    # FIXME
+    bless [
+        ref $self eq 'WebDriver::Tiny::Elements' ? $self->[0] : $self,
+        @ids,
+    ], 'WebDriver::Tiny::Elements';
 }
 
 sub get {
