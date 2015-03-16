@@ -7,4 +7,4 @@ $content = '{"value":"foo"}';
 
 is $drv->title, 'foo';
 
-args_are [ GET => 'http://localhost:4444/session/:sid/title', {} ];
+args_are [ GET => 'http://localhost:4444/wd/hub/session/:sid/title', {} ];
