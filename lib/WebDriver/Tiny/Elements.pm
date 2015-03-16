@@ -98,7 +98,8 @@ sub submit {
                 # Selenium won't let you clear a file input.
                 $elem->clear if $type ne 'file';
 
-                $elem->send_keys($value);
+                # Stringify potential objects, like File::Temp.
+                $elem->send_keys("$value");
             }
         }
         elsif ( $tag eq 'select' ) {
