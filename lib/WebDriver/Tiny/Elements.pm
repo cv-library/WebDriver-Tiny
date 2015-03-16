@@ -89,7 +89,7 @@ sub submit {
                 # current selected state, i.e. value xor state.
                 #
                 # We not each value to get a consistent true/false.
-                $elem->click if !$value != !$elem->is_selected;
+                $elem->click if !$value != !$elem->selected;
             }
             elsif ( $type eq 'radio' ) {
                 $self->find("[name='$name'][value='$value']")->click;
