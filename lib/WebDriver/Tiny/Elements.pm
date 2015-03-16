@@ -27,9 +27,8 @@ sub visible  { $_[0]->_req( GET => '/displayed' )->{value} }
 
 sub send_keys {
     my ( $self, @keys ) = @_;
-    my ( $drv,  @ids  ) = @$self;
 
-    $drv->_req( POST => "/element/$_/value", { value => \@keys } ) for @ids;
+    $self->_req( POST => '/value', { value => \@keys } );
 
     $self;
 }
