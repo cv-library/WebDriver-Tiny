@@ -43,6 +43,7 @@ sub new {
         # FIXME Keep alive can make PhantomJS return a 400 bad request :-S.
         HTTP::Tiny->new( keep_alive => 0 ),
         "http://$args{host}:$args{port}/wd/hub/session",
+        $args{base_url} // '',
     ], $class;
 
     $self->[1] .= '/' . $self->_req(
@@ -55,6 +56,14 @@ sub new {
 
 sub title { $_[0]->_req( GET => '/title' )->{value} }
 sub url   { $_[0]->_req( GET => '/url'   )->{value} }
+
+sub base_url {
+    my ( $self, $url ) = @_;
+
+    $self->[2] = $url // '' if @_ == 2;
+
+    $self->[2];
+}
 
 my %methods = (
     css               => 'css selector',
@@ -103,9 +112,14 @@ sub find {
 }
 
 sub get {
-    $_[0]->_req( POST => '/url', { url => $_[1] } );
+    my ( $self, $url ) = @_;
 
-    $_[0];
+    $self->_req(
+        POST => '/url',
+        { url => $url =~ m(^https?://) ? $url : $self->[2] . $url },
+    );
+
+    $self;
 }
 
 # TODO make this handle elements too? Or make a new method?
