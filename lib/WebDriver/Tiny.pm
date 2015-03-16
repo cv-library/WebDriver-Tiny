@@ -102,7 +102,7 @@ sub find {
         Time::HiRes::sleep( $args{sleep} // 0.1 );
     }
 
-    if ( !@ids && exists $args{dies} && !$args{dies} ) {
+    if ( !@ids && !exists $args{dies} && !$args{dies} ) {
         require Carp;
 
         Carp::croak ref $self, ' - Elements not found'
