@@ -108,10 +108,10 @@ sub find {
     }
 
     # FIXME
-    bless [
-        ref $self eq 'WebDriver::Tiny::Elements' ? $self->[0] : $self,
-        @ids,
-    ], 'WebDriver::Tiny::Elements';
+    $self = $self->[0] if ref $self eq 'WebDriver::Tiny::Elements';
+
+    wantarray ? map { bless [ $self, $_ ], 'WebDriver::Tiny::Elements' } @ids
+              : bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
 }
 
 sub get {
