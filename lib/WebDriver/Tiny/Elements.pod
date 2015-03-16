@@ -1,0 +1,14 @@
+=head1 NAME
+
+WebDriver::Tiny::Elements
+
+=head1 METHODS
+
+=head2 first
+
+Reduce the set of matched elements to the first in the set.
+
+=head2 text
+
+Get the combined text contents of each element in the set of matched elements,
+including their descendants.

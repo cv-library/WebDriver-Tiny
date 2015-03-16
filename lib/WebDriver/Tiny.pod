@@ -1,0 +1,49 @@
+=encoding UTF-8
+
+=head1 NAME
+
+WebDriver::Tiny - Selenium 2.0 bindings for Perl
+
+=for html
+<a href=https://travis-ci.org/cv-library/WebDriver-Tiny>
+    <img src=https://api.travis-ci.org/cv-library/WebDriver-Tiny.svg>
+</a>
+
+=head1 SYNOPSIS
+
+ use WebDriver::Tiny;
+
+ my $drv = WebDriver::Tiny->new;
+
+ # Go to Google.
+ $drv->get('https://www.google.co.uk');
+
+ # Type into the search box 'p', 'e', 'r', 'l', <RETURN>.
+ $drv->('input[name=q]')->send_keys("perl\N{WD_RETURN}");
+
+ # Click the first perl result (perl.org).
+ $drv->('h3.r > a')->click;
+
+ # Save a screenshot of the page.
+ $drv->screenshot('/tmp/perl.org.png');
+
+=head1 DESCRIPTION
+
+TODO
+
+=head1 METHODS
+
+=head2 find
+
+ $drv->find( 'foo', dies => 0, method => 'link name', sleep => 0.1, tries => 3 )
+
+=head1 SEE ALSO
+
+L<Selenium::Remote::Driver>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright © 2015 CV-Library Ltd.
+
+This is free software; you can redistribute it and/or modify it under the
+same terms as Perl itself.
