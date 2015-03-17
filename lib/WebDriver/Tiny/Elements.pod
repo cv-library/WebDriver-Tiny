@@ -44,11 +44,11 @@ return a new collection, none of them involve a call to the server.
 
 =head3 first
 
-Reutrns a new collection containing only the first element in this collection.
+Returns a new collection containing only the first element in this collection.
 
 =head3 last
 
-Reutrns a new collection containing only the last element in this collection.
+Returns a new collection containing only the last element in this collection.
 
 =head3 size
 
@@ -56,7 +56,7 @@ Returns a count of how many elements are in the collection.
 
 =head3 slice
 
-Reutrns a new collection containing the elements of the current collection,
+Returns a new collection containing the elements of the current collection,
 indentified by indices, starting at zero e.g.
 
  $elems->slice(0);       # Same as first.
