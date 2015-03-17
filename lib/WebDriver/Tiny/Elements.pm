@@ -1,6 +1,6 @@
 package WebDriver::Tiny::Elements 0.001;
 
-use strict;
+use 5.014;
 use warnings;
 
 # Manip
