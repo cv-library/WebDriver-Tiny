@@ -68,20 +68,20 @@ key/value options:
 
 =head3 dies = 1
 
- Whether C<find> dies if it fails to find any elements. Defaults to true.
+Whether C<find> dies if it fails to find any elements. Defaults to true.
 
 =head3 method = css | ecmascript | link_text | partial_link_text | xpath
 
- The matching pattern to use with the given selector, defaults to 'css'.
+The matching pattern to use with the given selector, defaults to 'css'.
 
 =head3 sleep = 0.1
 
- How long to sleep before a reattempt of an unsuccessful match. Defaults to
- 0.1 seconds.
+How long to sleep before a reattempt of an unsuccessful match. Defaults to 0.1
+seconds.
 
 =head3 tries = 3
 
- Maximum number of attempts to try and find a match.
+Maximum number of attempts to try and find a match.
 
 =head2 get
 
