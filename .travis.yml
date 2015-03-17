@@ -6,6 +6,6 @@ perl:
     - '5.16'
     - '5.14'
 
-install:       cpanm -n Devel::Cover::Report::Coveralls
+install:       cpanm -n --skip-satisfied Devel::Cover::Report::Coveralls
 script:        PERL5OPT=-MDevel::Cover prove -lv
 after_success: cover -report coveralls
