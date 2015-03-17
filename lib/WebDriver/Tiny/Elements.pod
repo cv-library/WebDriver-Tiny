@@ -4,11 +4,67 @@ WebDriver::Tiny::Elements
 
 =head1 METHODS
 
-=head2 first
+=head2 Actions
 
-Reduce the set of matched elements to the first in the set.
+=head3 click
 
-=head2 text
+=head3 clear
+
+=head3 send_keys
+
+=head3 submit
+
+=head3 tap
+
+=head2 Attributes
+
+=head3 attr
+
+=head3 css
+
+=head3 enabled
+
+=head3 rect
+
+=head3 selected
+
+=head3 tag
+
+=head3 text
 
 Get the combined text contents of each element in the set of matched elements,
 including their descendants.
+
+=head3 visible
+
+=head2 Manipulation
+
+The following methods merely return information about this collection or
+return a new collection, none of them involve a call to the server.
+
+=head3 first
+
+Reutrns a new collection containing only the first element in this collection.
+
+=head3 last
+
+Reutrns a new collection containing only the last element in this collection.
+
+=head3 size
+
+Returns a count of how many elements are in the collection.
+
+=head3 slice
+
+Reutrns a new collection containing the elements of the current collection,
+indentified by indices, starting at zero e.g.
+
+ $elems->slice(0);       # Same as first.
+ $elems->slice(1, 2);    # The second and the third elements.
+ $elems->slice(-1);      # Same as last.
+
+=head2 Other
+
+=head3 find
+
+=head3 screenshot

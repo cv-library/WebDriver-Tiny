@@ -34,11 +34,64 @@ WebDriver::Tiny - Selenium 2.0 bindings for Perl
 
 TODO
 
+=head1 IMPORT
+
+TODO mention charnames
+
 =head1 METHODS
 
-=head2 find
+=head2 new [ base_url => '' ], [ host => 'localhost' ], [ port => 4444 ]
+
+Constructs an instance of this class.
+
+=head2 find $selector [, $option => $value, … ]
+
+Return a collection of matched elements found in the DOM based on passed
+argument(s).
+
+ # Find's the element with ID "foo".
+ $drv->find('#foo')
+
+ # Find's all the elements with a class name "bar".
+ $drv->find('.bar');
 
  $drv->find( 'foo', dies => 0, method => 'link name', sleep => 0.1, tries => 3 )
+
+Due to C<find> being the most common action performed, the method name can be
+dropped altogether like so:
+
+ $drv->('#foo');
+ $drv->('.bar');
+
+Accepts a mandatory selector parameter and zero or more of the following
+key/value options:
+
+=head3 dies = 1
+
+ Whether C<find> dies if it fails to find any elements. Defaults to true.
+
+=head3 method = css | ecmascript | link_text | partial_link_text | xpath
+
+ The matching pattern to use with the given selector, defaults to 'css'.
+
+=head3 sleep = 0.1
+
+ How long to sleep before a reattempt of an unsuccessful match. Defaults to
+ 0.1 seconds.
+
+=head3 tries = 3
+
+ Maximum number of attempts to try and find a match.
+
+=head2 get
+
+=head2 screenshot
+
+=head2 title
+
+=head2 url
+
+=head2 window_size
 
 =head1 SEE ALSO
 
