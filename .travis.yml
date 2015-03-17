@@ -8,4 +8,4 @@ perl:
 
 install:       cpanm -n --skip-satisfied Devel::Cover::Report::Coveralls
 script:        PERL5OPT=-MDevel::Cover prove -lv
-after_success: cover -report coveralls
+after_success: cover -report coveralls -select_re ^lib/
