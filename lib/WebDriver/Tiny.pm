@@ -1,6 +1,6 @@
 package WebDriver::Tiny 0.001;
 
-use strict;
+use 5.014;
 use warnings;
 
 # Allow "cute" $drv->('selector') syntax.
@@ -65,19 +65,19 @@ sub base_url {
     $self->[2];
 }
 
-my %methods = (
-    css               => 'css selector',
-    ecmascript        => 'ecmascript',
-    link_text         => 'link text',
-    partial_link_text => 'partial link text',
-    xpath             => 'xpath',
-);
-
 # NOTE This method can be called from a driver or a collection of elements.
 sub find {
     my ( $self, $selector, %args ) = @_;
 
-    my $method = $methods{ $args{method} // '' } // 'css selector';
+    state $methods = {
+        css               => 'css selector',
+        ecmascript        => 'ecmascript',
+        link_text         => 'link text',
+        partial_link_text => 'partial link text',
+        xpath             => 'xpath',
+    };
+
+    my $method = $methods->{ $args{method} // '' } // 'css selector';
 
     my $must_be_visible
         = $method eq 'css selector' && $selector =~ s/:visible$//;
