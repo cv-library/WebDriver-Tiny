@@ -7,5 +7,5 @@ perl:
     - '5.14'
 
 install:       cpanm -n Devel::Cover::Report::Coveralls
-script:        prove -MDevel::Cover -lv
+script:        PERL5OPT=-MDevel::Cover prove -lv
 after_success: cover -report coveralls
