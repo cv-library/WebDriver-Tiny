@@ -8,6 +8,9 @@ WebDriver::Tiny - Selenium 2.0 bindings for Perl
 <a href=https://travis-ci.org/cv-library/WebDriver-Tiny>
     <img src=https://api.travis-ci.org/cv-library/WebDriver-Tiny.svg>
 </a>
+<a href=https://coveralls.io/r/cv-library/WebDriver-Tiny>
+    <img src=https://coveralls.io/repos/cv-library/WebDriver-Tiny/badge.svg>
+</a>
 
 =head1 SYNOPSIS
 
