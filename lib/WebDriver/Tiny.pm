@@ -84,6 +84,13 @@ sub base_url {
     $self->[2];
 }
 
+sub cookies {
+    +{
+        map { $_->{name} => $_ }
+        @{ $_[0]->_req( GET => '/cookie' )->{value} // [] }
+    };
+}
+
 # NOTE This method can be called from a driver or a collection of elements.
 sub find {
     my ( $self, $selector, %args ) = @_;
@@ -131,6 +138,14 @@ sub find {
 
     wantarray ? map { bless [ $self, $_ ], 'WebDriver::Tiny::Elements' } @ids
               : bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
+}
+
+sub delete_cookie {
+    my $self = shift;
+
+    $self->_req( DELETE => '/cookie' . ( @_ ? '/' . shift // '' : '' ) );
+
+    $self;
 }
 
 sub execute {
