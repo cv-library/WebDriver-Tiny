@@ -1,6 +1,7 @@
-package WebDriver::Tiny 0.001;
+package WebDriver::Tiny;
 
-use 5.014;
+use 5.010;
+use strict;
 use warnings;
 
 # Allow "cute" $drv->('selector') syntax.
@@ -11,6 +12,8 @@ use HTTP::Tiny;
 use JSON::PP ();
 use Time::HiRes;
 use WebDriver::Tiny::Elements;
+
+our $VERSION = 0.001;
 
 sub import {
     # From https://w3c.github.io/webdriver/webdriver-spec.html#sendkeys

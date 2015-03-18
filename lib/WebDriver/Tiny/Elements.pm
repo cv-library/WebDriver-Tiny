@@ -1,7 +1,10 @@
-package WebDriver::Tiny::Elements 0.001;
+package WebDriver::Tiny::Elements;
 
-use 5.014;
+use 5.010;
+use strict;
 use warnings;
+
+our $VERSION = 0.001;
 
 # Manip
 sub first { bless [ @{ $_[0] }[ 0,  1 ] ] }
