@@ -72,8 +72,9 @@ sub new {
     $self;
 }
 
-sub title { $_[0]->_req( GET => '/title' )->{value} }
-sub url   { $_[0]->_req( GET => '/url'   )->{value} }
+sub page_ids { $_[0]->_req( GET => '/window_handles' )->{value} }
+sub title    { $_[0]->_req( GET => '/title'          )->{value} }
+sub url      { $_[0]->_req( GET => '/url'            )->{value} }
 
 sub base_url {
     my ( $self, $url ) = @_;
@@ -162,6 +163,14 @@ sub screenshot {
     }
 
     $data;
+}
+
+sub switch_page {
+    my ( $self, $id ) = @_;
+
+    $self->_req( POST => '/window', { name => $id } );
+
+    $self;
 }
 
 sub window_size {
