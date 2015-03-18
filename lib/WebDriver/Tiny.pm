@@ -133,6 +133,11 @@ sub find {
               : bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
 }
 
+sub execute {
+    shift->_req( POST => '/execute', { script => shift, args => \@_ } )
+        ->{value};
+}
+
 sub get {
     my ( $self, $url ) = @_;
 
@@ -172,6 +177,8 @@ sub switch_page {
 
     $self;
 }
+
+sub user_agent { $_[0]->execute('return window.navigator.userAgent') }
 
 sub window_size {
     my ( $self, $width, $height ) = @_;
