@@ -25,6 +25,12 @@ sub visible  { $_[0]->_req( GET => '/displayed' )->{value} }
 *find       = \&WebDriver::Tiny::find;
 *screenshot = \&WebDriver::Tiny::screenshot;
 
+sub move_to {
+    $_[0][0]->_req( POST => '/moveto', { element => $_[0][1] } );
+
+    $_[0];
+}
+
 sub send_keys {
     my ( $self, @keys ) = @_;
 
