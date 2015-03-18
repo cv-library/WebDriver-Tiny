@@ -122,7 +122,7 @@ sub find {
     if ( !@ids && !exists $args{dies} && !$args{dies} ) {
         require Carp;
 
-        Carp::croak ref $self, ' - Elements not found'
+        Carp::croak ref $self, qq/->find failed for $method = "$_[1]"/;
     }
 
     # FIXME
