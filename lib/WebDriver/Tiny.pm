@@ -13,7 +13,8 @@ use JSON::PP ();
 use Time::HiRes;
 use WebDriver::Tiny::Elements;
 
-our $VERSION = 0.001;
+our @CARP_NOT = 'WebDriver::Tiny::Elements';
+our $VERSION  = 0.001;
 
 sub import {
     # Perl 5.14 or higher needed to create custom charnames.
@@ -227,9 +228,16 @@ sub _req {
     );
 
     unless ( $reply->{success} ) {
+        # Try to extract an error message from the reply. Yep nested JSON :-(
+        my $error = eval {
+            JSON::PP::decode_json(
+                JSON::PP::decode_json( $reply->{content} )->{value}{message}
+            )->{errorMessage}
+        };
+
         require Carp;
 
-        Carp::croak ref $self, " - $reply->{content}";
+        Carp::croak ref $self, ' - ', $error // $reply->{content};
     }
 
     JSON::PP::decode_json $reply->{content};
