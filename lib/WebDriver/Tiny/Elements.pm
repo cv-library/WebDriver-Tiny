@@ -63,11 +63,13 @@ sub submit {
                 $self->find("[name='$name'][value='$value']")->click;
             }
             else {
-                # Selenium won't let you clear a file input.
-                $elem->clear if $type ne 'file';
+                # Press CTRL+A then BACKSPACE before typing.
+                my $clear = $type eq 'file'
+                          ? ''
+                          : "\N{U+E009}a\N{U+E000}\N{U+E003}";
 
-                # Stringify potential objects, like File::Temp.
-                $elem->send_keys("$value");
+                # The concat also stringifies any potential object in $value.
+                $elem->send_keys( $clear . $value );
             }
         }
         elsif ( $tag eq 'select' ) {
