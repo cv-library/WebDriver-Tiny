@@ -45,38 +45,63 @@ sub send_keys {
 sub submit {
     my ( $self, %values ) = @_;
 
-    while ( my ( $name, $value ) = each %values ) {
-        my $elem = $self->find("[name='$name']");
-        my $tag  = $elem->tag;
+    # For each key in %values, try to find an element under $self with that
+    # name, then depending on what type of element that is, work out if a
+    # click, send_keys, etc. method is needed.
+    #
+    # This logic is done in JS rather than Perl to reduce the amount of calls
+    # to the server from one plus calls per element to just one total call!
+    #
+    # This improves performance at the cost of having to read JS ;-)
+    my $drv   = $self->[0];
+    my $elems = $drv->execute( <<'JS', { ELEMENT => $self->[1] }, \%values );
+        'use strict';
 
-        if ( $tag =~ /^(?:input|textarea)$/ ) {
-            my $type = $elem->attr('type');
+        var form = arguments[0], values = arguments[1], click = [], keys = [];
 
-            if ( $type eq 'checkbox' ) {
-                # Click the element if the desired value is different to its
-                # current selected state, i.e. value xor state.
-                #
-                # We not each value to get a consistent true/false.
-                $elem->click if !$value != !$elem->selected;
-            }
-            elsif ( $type eq 'radio' ) {
-                $self->find("[name='$name'][value='$value']")->click;
+        for ( var name in values ) {
+            var elem  = form.querySelector('[name="' + name + '"]'),
+                value = values[name];
+
+            if ( elem.tagName == 'SELECT' ) {
+                var options = elem.querySelectorAll(
+                    '[value="' + (
+                        value.constructor === Array
+                            ? value.join('"],[value="') : value
+                    ) + '"]'
+                );
+
+                for ( var i = 0; i < options.length; i++ )
+                    click.push(options[i]);
             }
             else {
-                # Press CTRL+A then BACKSPACE before typing.
-                my $clear = $type eq 'file'
-                          ? ''
-                          : "\N{U+E009}a\N{U+E000}\N{U+E003}";
-
-                # The concat also stringifies any potential object in $value.
-                $elem->send_keys( $clear . $value );
+                if ( elem.type == 'checkbox' ) {
+                    if ( !value != !elem.selected )
+                        click.push(elem);
+                }
+                else if ( elem.type == 'radio' )
+                    click.push(
+                        form.querySelector(
+                            '[name="' + name + '"][value="' + value + '"]')
+                    );
+                else
+                    keys.push([
+                        elem,
+                        // Press CTRL+A then BACKSPACE before typing
+                        ( elem.type == 'file' ? '' : '\uE009a\uE000\uE003' ) +
+                        value
+                    ]);
             }
         }
-        elsif ( $tag eq 'select' ) {
-            $elem->find("[value='$_']")->click
-                for ref $value ? @$value : $value;
-        }
-    }
+
+        return [ click, keys ];
+JS
+
+    $drv->_req( POST => "/element/$_->{ELEMENT}/click" ) for @{ $elems->[0] };
+
+    $drv->_req(
+        POST => "/element/$_->[0]{ELEMENT}/value", { value => [ $_->[1] ] },
+    ) for @{ $elems->[1] };
 
     $self->_req( POST => '/submit' );
 
