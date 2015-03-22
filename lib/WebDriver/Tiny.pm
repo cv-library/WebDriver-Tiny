@@ -203,13 +203,11 @@ sub switch_page {
 sub user_agent { $_[0]->execute('return window.navigator.userAgent') }
 
 sub window_size {
-    my ( $self, $width, $height ) = @_;
+    my ( $self, $w, $h ) = @_;
 
     if ( @_ == 3 ) {
         $self->_req(
-            POST => '/window/current/size',
-            { width => $width, height => $height },
-        );
+            POST => '/window/current/size', { width => $w, height => $h } );
 
         return $self;
     }
