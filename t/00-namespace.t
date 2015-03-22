@@ -6,7 +6,7 @@ use WebDriver::Tiny;
 
 my %got = %WebDriver::Tiny::;
 
-# Delete stuff that varies per perl version.
+# Delete stuff that varies by perl version.
 delete @got{ qw/(( OVERLOAD/ };
 
 is_deeply [ sort keys %got ], [ qw/
@@ -38,7 +38,7 @@ is_deeply [ sort keys %got ], [ qw/
 
 %got = %WebDriver::Tiny::Elements::;
 
-# Delete stuff that varies per perl version.
+# Delete stuff that varies by perl version.
 delete @got{ qw/CARP_NOT ISA/ };
 
 is_deeply [ sort keys %got ], [ qw/
