@@ -83,6 +83,10 @@ sub page_ids { $_[0]->_req( GET => '/window_handles' )->{value} }
 sub title    { $_[0]->_req( GET => '/title'          )->{value} }
 sub url      { $_[0]->_req( GET => '/url'            )->{value} }
 
+sub accept_alert  { $_[0]->_req( POST   => '/accept_alert'  ); $_[0] }
+sub close_page    { $_[0]->_req( DELETE => '/window'        ); $_[0] }
+sub dismiss_alert { $_[0]->_req( POST   => '/dismiss_alert' ); $_[0] }
+
 sub base_url {
     my ( $self, $url ) = @_;
 
