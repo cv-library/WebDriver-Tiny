@@ -115,36 +115,36 @@ sub find {
     my $must_be_visible
         = $method eq 'css selector' && $selector =~ s/:visible$//;
 
-    my $ids;
+    my @ids;
 
     for ( 0 .. ( $args{tries} // 5 ) ) {
-        $ids = $self->_req(
+        my $reply = $self->_req(
             POST => '/elements',
             { using => $method, value => $selector },
-        )->{value};
+        );
 
-        @$ids = grep {
-            $self->_req( GET => "/element/$_->{ELEMENT}/displayed" )->{value}
-        } @$ids if $must_be_visible;
+        @ids = map $_->{ELEMENT}, @{ $reply->{value} };
 
-        last if @$ids;
+        @ids = grep {
+            $self->_req( GET => "/element/$_/displayed" )->{value}
+        } @ids if $must_be_visible;
+
+        last if @ids;
 
         Time::HiRes::sleep( $args{sleep} // 0.1 );
     }
 
-    if ( !@$ids && !exists $args{dies} && !$args{dies} ) {
+    if ( !@ids && !exists $args{dies} && !$args{dies} ) {
         require Carp;
 
         Carp::croak ref $self, qq/->find failed for $method = "$_[1]"/;
     }
 
-    # Inflate results into one or more collections, depending on context.
-    my $class = 'WebDriver::Tiny::Elements';
-    my $drv   = ref $self eq $class ? $self->[0] : $self;
+    # FIXME
+    $self = $self->[0] if ref $self eq 'WebDriver::Tiny::Elements';
 
-    # Would you like an inner map or an outer map? :-P
-    wantarray ? map { bless [ $self, $_->{ELEMENT} ], $class } @$ids
-              : bless [ $self, map $_->{ELEMEMT}, @$ids ], $class;
+    wantarray ? map { bless [ $self, $_ ], 'WebDriver::Tiny::Elements' } @ids
+              : bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
 }
 
 sub delete_cookie {
