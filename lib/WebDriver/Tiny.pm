@@ -80,6 +80,7 @@ sub new {
 }
 
 sub page_ids { $_[0]->_req( GET => '/window_handles' )->{value} }
+sub source   { $_[0]->_req( GET => '/source'         )->{value} }
 sub title    { $_[0]->_req( GET => '/title'          )->{value} }
 sub url      { $_[0]->_req( GET => '/url'            )->{value} }
 
