@@ -71,22 +71,37 @@ sub new {
         $args{base_url} // '',
     ], $class;
 
-    $self->[1] .= '/' . $self->_req(
-        POST => '',
-        { desiredCapabilities => { browserName => 'firefox' } },
-    )->{sessionId};
+    my $reply = $self->_req(
+        POST => '', { desiredCapabilities => { browserName => 'firefox' } } );
+
+    $self->[1] .= '/' . $reply->{sessionId};
+
+    # Store the capabilities.
+    $self->[3] = $reply->{value};
 
     $self;
 }
+
+sub capabilities { $_[0][3] }
 
 sub page_ids { $_[0]->_req( GET => '/window_handles' )->{value} }
 sub source   { $_[0]->_req( GET => '/source'         )->{value} }
 sub title    { $_[0]->_req( GET => '/title'          )->{value} }
 sub url      { $_[0]->_req( GET => '/url'            )->{value} }
 
-sub accept_alert  { $_[0]->_req( POST   => '/accept_alert'  ); $_[0] }
-sub close_page    { $_[0]->_req( DELETE => '/window'        ); $_[0] }
-sub dismiss_alert { $_[0]->_req( POST   => '/dismiss_alert' ); $_[0] }
+sub close_page { $_[0]->_req( DELETE => '/window' ); $_[0] }
+
+sub accept_alert {
+    $_[0]->_req( POST => '/accept_alert' ) if $_[0][3]{handlesAlerts};
+
+    $_[0];
+}
+
+sub dismiss_alert {
+    $_[0]->_req( POST => '/dismiss_alert' ) if $_[0][3]{handlesAlerts};
+
+    $_[0];
+}
 
 sub base_url {
     my ( $self, $url ) = @_;

@@ -156,15 +156,19 @@ Maximum number of attempts to try and find a match.
 
 =head2 Properties
 
-=head3 source
+=head3 capabilities
 
-Get the source code of the current page.
+Hash of the capabilities of the current session.
 
 =head3 orientation
 
  my $orientation = $drv->orientation;
 
  $drv->orientation($orientation);
+
+=head3 source
+
+Get the source code of the current page.
 
 =head3 title
 

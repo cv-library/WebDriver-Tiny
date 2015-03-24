@@ -21,6 +21,7 @@ is_deeply [ sort keys %got ], [ qw/
     _req
     accept_alert
     base_url
+    capabilities
     close_page
     cookies
     delete_cookie
