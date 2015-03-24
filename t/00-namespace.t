@@ -19,9 +19,12 @@ is_deeply [ sort keys %got ], [ qw/
     VERSION
     __ANON__
     _req
+    accept_alert
     base_url
+    close_page
     cookies
     delete_cookie
+    dismiss_alert
     execute
     find
     get
@@ -29,6 +32,7 @@ is_deeply [ sort keys %got ], [ qw/
     new
     page_ids
     screenshot
+    source
     switch_page
     title
     url
