@@ -8,9 +8,19 @@ WebDriver::Tiny::Elements
 
 =head3 click
 
+ $elems->click;
+
 =head3 clear
 
+ $elems->clear;
+
+=head3 move_to
+
+ $elems->move_to;
+
 =head3 send_keys
+
+ $elems->send_keys('The quick brown fox jumps over the lazy dog');
 
 =head3 submit
 

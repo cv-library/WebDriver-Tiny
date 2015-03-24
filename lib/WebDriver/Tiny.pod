@@ -40,24 +40,44 @@ TODO mention charnames
 
 =head1 METHODS
 
-=head2 new [ base_url => '' ], [ host => 'localhost' ], [ port => 4444 ]
+=head2 Driver
+
+=head3 new
+
+ my $drv = WebDriver::Tiny->new(
+     base_url => ...,
+     host     => 'localhost',
+     port     => 4444,
+ );
 
 Constructs an instance of this class.
 
-=head2 find $selector [, $option => $value, … ]
+=head3 base_url
+
+ my $base_url = $drv->base_url;
+
+ $drv->base_url($base_url);
+
+Accessor to get/set the C<base_url> after instantiation.
+
+=head2 Actions
+
+=head3 execute
+
+ my $return = $drv->execute('return 1 + 1');
+
+=head3 find
+
+ my @array_of_elements $drv->find('.class');
+
+ my $elements = $drv->find( '#id', %args );
 
 Return a collection of matched elements found in the DOM based on passed
-argument(s).
+argument(s). Always returns a collection of L<WebDriver::Elements> (sometimes
+containing no elements), in list context it will return an array of
+collections, each containing one element.
 
- # Find's the element with ID "foo".
- $drv->find('#foo')
-
- # Find's all the elements with a class name "bar".
- $drv->find('.bar');
-
- $drv->find( 'foo', dies => 0, method => 'link name', sleep => 0.1, tries => 3 )
-
-Due to C<find> being the most common action performed, the method name can be
+Due to C<find> being the most common method invoked, the method name can be
 dropped altogether like so:
 
  $drv->('#foo');
@@ -66,32 +86,131 @@ dropped altogether like so:
 Accepts a mandatory selector parameter and zero or more of the following
 key/value options:
 
-=head3 dies = 1
+=over
+
+=item dies
 
 Whether C<find> dies if it fails to find any elements. Defaults to true.
 
-=head3 method = css | ecmascript | link_text | partial_link_text | xpath
+=item method
 
-The matching pattern to use with the given selector, defaults to 'css'.
+The matching pattern to use with the given selector - css, ecmascript,
+link_text, partial_link_text, or xpath. Defaults to 'css'.
 
-=head3 sleep = 0.1
+=item sleep
 
 How long to sleep before a reattempt of an unsuccessful match. Defaults to 0.1
 seconds.
 
-=head3 tries = 3
+=item tries
 
 Maximum number of attempts to try and find a match.
 
-=head2 get
+=back
 
-=head2 screenshot
+=head2 Alerts
 
-=head2 title
+=head3 accept_alert
 
-=head2 url
+ $drv->accept_alert;
 
-=head2 window_size
+=head3 alert_text
+
+ my $text = $drv->alert_text;
+
+=head3 dismiss_alert
+
+ $drv->dismiss_alert;
+
+=head2 Cookies
+
+=head3 cookies
+
+ my $cookies = $drv->cookies;
+
+=head3 delete_cookie
+
+ # Delete all cookies.
+ $drv->delete_cookie;
+
+ # Delete cookie "foo".
+ $drv->delete_cookie('foo');
+
+=head2 Navigation
+
+=head3 back
+
+ $drv->back;
+
+=head3 forward
+
+ $drv->forward;
+
+=head3 get
+
+ $drv->get($url);
+
+=head3 reload
+
+ $drv->reload;
+
+=head2 Properties
+
+=head3 source
+
+Get the source code of the current page.
+
+=head3 orientation
+
+ my $orientation = $drv->orientation;
+
+ $drv->orientation($orientation);
+
+=head3 title
+
+ my $title = $drv->title;
+
+=head3 url
+
+ my $url = $drv->title;
+
+Get the URL of the current page.
+
+=head3 user_agent
+
+ my $user_agent = $drv->user_agent;
+
+=head2 Window
+
+=head3 close_page
+
+ $drv->close_page;
+
+Close the current page.
+
+=head3 move_to
+
+ $drv->move_to( $x, $y );
+
+=head3 page_ids
+
+ my $ids = $drv->page_ids;
+
+=head3 screenshot
+
+ my $png_blob = $drv->screenshot;
+
+ $drv->screenshot('/tmp/foo.png');
+
+=head3 switch_page
+
+ $drv->switch_page($page_id);
+
+=head3 window_size
+
+ my ( $width, $height ) = $drv->window_size;
+
+ $drv->window_size( $width, $height );
 
 =head1 SEE ALSO
 
