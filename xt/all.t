@@ -68,8 +68,6 @@ is $drv->url, $url, 'url';
 
 chomp( my $ver = `phantomjs -v` );
 
-note "PhantomJS ver = $ver";
-
 like $drv->user_agent, qr( PhantomJS/\Q$ver\E ), 'user_agent';
 
 note 'Form';
