@@ -73,7 +73,7 @@ like $drv->user_agent, qr( PhantomJS/\Q$ver\E ), 'user_agent';
 note 'Form';
 
 is_deeply [ map $_->attr('name'), $drv->('input') ],
-    [ 'text', "text '", 'text "', 'text \\', 'text ☃' ],
+    [ 'text', "text '", 'text "', 'text \\', 'text ☃', 'radio', 'radio' ],
     'names of all input fields are correct';
 
 my @values = (
@@ -82,6 +82,7 @@ my @values = (
     'text "'  => 'baz',
     'text \\' => 'qux',
     'text ☃' => 'quux',
+    'radio'   => 'b',
 );
 
 $drv->('form')->submit(@values);

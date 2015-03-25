@@ -62,6 +62,10 @@ sub submit {
         for ( var name in values ) {
             var elem = form.elements[name], value = values[name];
 
+            // FIXME - bodge for radio.
+            if ( elem.length > 1 )
+                elem = elem[0];
+
             if ( elem.tagName == 'SELECT' ) {
                 var options = elem.querySelectorAll(
                     '[value="' + (
