@@ -60,8 +60,9 @@ sub submit {
         var form = arguments[0], values = arguments[1], click = [], keys = [];
 
         for ( var name in values ) {
-            var elem  = form.querySelector('[name="' + name + '"]'),
-                value = values[name];
+            var value = values[name],
+                elem  = form.querySelector('[name="' +
+                    name.replace( /([\\"])/g, '\\$1' ) + '"]');
 
             if ( elem.tagName == 'SELECT' ) {
                 var options = elem.querySelectorAll(

@@ -17,7 +17,8 @@ use warnings;
 
 use Cwd ();
 use Test::Deep;
-use Test::More tests => 5;
+use Test::More;
+use URI;
 use WebDriver::Tiny;
 
 my ( $drv, $i );
@@ -34,6 +35,8 @@ my ( $drv, $i );
 }
 
 $drv->get( my $url = 'file://' . Cwd::fastcwd . '/xt/test.html' );
+
+note 'Basic';
 
 cmp_deeply $drv->capabilities, {
     acceptSslCerts           => 0,
@@ -66,3 +69,25 @@ is $drv->url, $url, 'url';
 chomp( my $ver = `phantomjs -v` );
 
 like $drv->user_agent, qr( PhantomJS/\Q$ver\E ), 'user_agent';
+
+note 'Form';
+
+is_deeply [ map $_->attr('name'), $drv->('input') ],
+    [ 'text', "text '", 'text "', 'text \\', 'text ☃' ],
+    'names of all input fields are correct';
+
+my @values = (
+    'text'    => 'foo',
+    "text '"  => 'bar',
+    'text "'  => 'baz',
+    'text \\' => 'qux',
+    'text ☃' => 'quux',
+);
+
+$drv->('form')->submit(@values);
+
+utf8::decode $_ for my @got = URI->new( $drv->url )->query_form;
+
+is_deeply \@got, \@values, 'submit works on all input fields correctly';
+
+done_testing;
