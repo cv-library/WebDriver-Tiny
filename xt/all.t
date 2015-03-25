@@ -17,7 +17,7 @@ use warnings;
 
 use Cwd ();
 use Test::Deep;
-use Test::More tests => 4;
+use Test::More tests => 5;
 use WebDriver::Tiny;
 
 my ( $drv, $i );
@@ -34,6 +34,27 @@ my ( $drv, $i );
 }
 
 $drv->get( my $url = 'file://' . Cwd::fastcwd . '/xt/test.html' );
+
+cmp_deeply $drv->capabilities, {
+    acceptSslCerts           => 0,
+    applicationCacheEnabled  => 0,
+    browserConnectionEnabled => 0,
+    browserName              => 'phantomjs',
+    cssSelectorsEnabled      => 1,
+    databaseEnabled          => 0,
+    driverName               => 'ghostdriver',
+    driverVersion            => re(qr/^[\d.]+$/),
+    handlesAlerts            => 0,
+    javascriptEnabled        => 1,
+    locationContextEnabled   => 0,
+    nativeEvents             => 1,
+    platform                 => re('linux'),
+    proxy                    => { proxyType => 'direct' },
+    rotatable                => 0,
+    takesScreenshot          => 1,
+    version                  => re(qr/^[\d.]+$/),
+    webStorageEnabled        => 0,
+}, 'capabilities';
 
 cmp_deeply $drv->page_ids,
     [ re qr/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/ ], 'page_ids';

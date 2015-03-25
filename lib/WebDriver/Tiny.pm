@@ -79,6 +79,9 @@ sub new {
     # Store the capabilities.
     $self->[3] = $reply->{value};
 
+    # Numify bool objects, saves memory.
+    $_ += 0 for grep ref eq 'JSON::PP::Boolean', values %{ $self->[3] };
+
     $self;
 }
 
