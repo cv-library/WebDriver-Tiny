@@ -1,5 +1,5 @@
-# Fork & spawn phantomjs as soon as possible, the reason for this is twofold:
-#   - Gives phantomjs longer to start before we need it.
+# Fork & spawn PhantomJS as soon as possible, the reason for this is twofold:
+#   - Gives PhantomJS longer to start before we need it.
 #   - Fork early when the memory consumption is at it's lowest.
 BEGIN {
     exec qw/
@@ -20,7 +20,18 @@ use Test::Deep;
 use Test::More tests => 4;
 use WebDriver::Tiny;
 
-my $drv = WebDriver::Tiny->new( port => 1337 );
+my ( $drv, $i );
+
+# PhantomJS might not be up yet, try it a few times.
+{
+    local $SIG{__WARN__} = sub {};
+
+    until ( $drv = eval { WebDriver::Tiny->new( port => 1337 ) } ) {
+        die $@ if ++$i == 10;
+
+        select undef, undef, undef, .1; # Sleep for a tenth of a second.
+    }
+}
 
 $drv->get( my $url = 'file://' . Cwd::fastcwd . '/xt/test.html' );
 
