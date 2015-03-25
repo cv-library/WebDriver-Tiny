@@ -251,9 +251,11 @@ sub _req {
     unless ( $reply->{success} ) {
         # Try to extract an error message from the reply. Yep nested JSON :-(
         my $error = eval {
-            JSON::PP::decode_json(
-                JSON::PP::decode_json( $reply->{content} )->{value}{message}
-            )->{errorMessage}
+            # FIXME We probably just want to tell JSON::PP not to decode.
+            utf8::encode my $msg
+                = JSON::PP::decode_json($reply->{content})->{value}{message};
+
+            JSON::PP::decode_json($msg)->{errorMessage}
         };
 
         require Carp;
