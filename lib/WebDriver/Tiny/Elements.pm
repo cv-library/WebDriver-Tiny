@@ -60,14 +60,13 @@ sub submit {
         var form = arguments[0], values = arguments[1], click = [], keys = [];
 
         for ( var name in values ) {
-            var elem = form.elements[name], value = values[name];
+            var elems = form.elements[name], value = values[name];
 
             // FIXME - bodge for radio.
-            if ( elem.length > 1 )
-                elem = elem[0];
+            var elem = elems.length > 1 ? elems[0] : elems;
 
-            if ( elem.tagName == 'SELECT' ) {
-                var options = elem.querySelectorAll(
+            if ( elem.tagName == 'OPTION' ) {
+                var options = elems.querySelectorAll(
                     '[value="' + (
                         value.constructor === Array
                             ? value.join('"],[value="') : value
