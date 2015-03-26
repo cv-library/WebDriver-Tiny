@@ -179,7 +179,13 @@ sub delete_cookie {
 }
 
 sub execute {
-    shift->_req( POST => '/execute', { script => shift, args => \@_ } )
+    my ( $self, $script, @args ) = @_;
+
+    # Currently only takes the first ID in the collection, this should change.
+    $_ = { ELEMENT => $_->[1] }
+        for grep ref eq 'WebDriver::Tiny::Elements', @args;
+
+    $self->_req( POST => '/execute', { script => $script, args => \@args } )
         ->{value};
 }
 
