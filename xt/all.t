@@ -17,8 +17,9 @@ use warnings;
 
 use Cwd ();
 use Test::Deep;
-use Test::More;
+use Test::More tests => 15;
 use URI;
+use URI::QueryParam;
 use WebDriver::Tiny;
 
 my ( $drv, $i );
@@ -89,23 +90,33 @@ is $ghost->text, '👻', '$ghost now has text';
 
 note 'Form';
 
-is_deeply [ map $_->attr('name'), $drv->('input') ],
-    [ 'text', "text '", 'text "', 'text \\', 'text ☃', 'radio', 'radio' ],
-    'names of all input fields are correct';
+is_deeply [ map $_->attr('name'), $drv->('input,select') ], [
+    'text', "text '", 'text "', 'text \\', 'text ☃',
+    ('radio') x 3, 'select', 'multi select',
+], 'names of all form fields are correct';
 
-my @values = (
-    'text'    => 'foo',
-    "text '"  => 'bar',
-    'text "'  => 'baz',
-    'text \\' => 'qux',
-    'text ☃' => 'quux',
-    'radio'   => 'b',
-);
+# Perl 6 envy :-(
+sub pick { map { splice @_, rand @_, 1 } 1 .. shift }
+sub roll { map { $_[ rand @_ ]         } 1 .. shift }
 
-$drv->('form')->submit(@values);
+$drv->('form')->submit( my %values = (
+    'text'         => join( '', roll 3, 'a'..'z' ),
+    "text '"       => join( '', roll 3, 'a'..'z' ),
+    'text "'       => join( '', roll 3, 'a'..'z' ),
+    'text \\'      => join( '', roll 3, 'a'..'z' ),
+    'text ☃'      => join( '', roll 3, 'a'..'z' ),
+    'radio'        => roll( 1, 'a'..'c' ),
+    'select'       => roll( 1, 'a'..'c' ),
+    'multi select' => [ pick( 2, 'a'..'c' ) ],
+) );
 
-utf8::decode $_ for my @got = URI->new( $drv->url )->query_form;
+my %expected;
 
-is_deeply \@got, \@values, 'submit works on all input fields correctly';
+while ( my ( $k, $v ) = each %values ) {
+    utf8::encode $k;
 
-done_testing;
+    $expected{$k} = ref $v ? bag @$v : $v;
+}
+
+cmp_deeply +URI->new( $drv->url )->query_form_hash, \%expected,
+    'submit works on all form fields correctly';
