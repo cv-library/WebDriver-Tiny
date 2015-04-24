@@ -18,7 +18,7 @@ use warnings;
 use Cwd ();
 use File::Temp;
 use Test::Deep;
-use Test::More tests => 18;
+use Test::More tests => 21;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -127,6 +127,11 @@ while ( my ( $k, $v ) = each %values ) {
 cmp_deeply +URI->new( $drv->url )->query_form_hash, \%expected,
     'submit works on all form fields correctly';
 
+note 'JS';
+##########
+
+is $drv->execute('return "foo"'), 'foo', q/execute('return "foo"')/;
+
 note 'Screenshot';
 ##################
 
@@ -143,3 +148,16 @@ is substr( $png, 0, 8 ), "\211PNG\r\n\032\n", 'screenshot looks like a PNG';
 
     is scalar <>, $png, 'screenshot("file") matches screenshot';
 }
+
+note 'Window Size';
+###################
+
+$drv->window_size( 640, 480 );
+
+is_deeply $drv->execute('return [ window.innerWidth, window.innerHeight ]'),
+    [ 640, 480 ], 'window_size( 640, 480 )';
+
+$drv->window_size( 800, 600 );
+
+is_deeply $drv->execute('return [ window.innerWidth, window.innerHeight ]'),
+    [ 800, 600 ], 'window_size( 800, 600 )';
