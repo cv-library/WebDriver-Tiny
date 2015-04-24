@@ -18,7 +18,7 @@ use warnings;
 use Cwd ();
 use File::Temp;
 use Test::Deep;
-use Test::More tests => 17;
+use Test::More tests => 18;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -61,6 +61,8 @@ cmp_deeply $drv->capabilities, {
     version                  => re(qr/^[\d.]+$/),
     webStorageEnabled        => 0,
 }, 'capabilities';
+
+is_deeply $drv->cookies, {}, 'cookies';
 
 cmp_deeply $drv->page_ids,
     [ re qr/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/ ], 'page_ids';
