@@ -16,8 +16,9 @@ use utf8;
 use warnings;
 
 use Cwd ();
+use File::Temp;
 use Test::Deep;
-use Test::More tests => 15;
+use Test::More tests => 17;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -38,6 +39,7 @@ my ( $drv, $i );
 $drv->get( my $url = 'file://' . Cwd::fastcwd . '/xt/test.html' );
 
 note 'Basic';
+#############
 
 cmp_deeply $drv->capabilities, {
     acceptSslCerts           => 0,
@@ -74,6 +76,7 @@ chomp( my $ver = `phantomjs -v` );
 like $drv->user_agent, qr( PhantomJS/\Q$ver\E ), 'user_agent';
 
 note 'Ghost';
+#############
 
 my $ghost = $drv->('body')->find('#ghost');
 
@@ -89,6 +92,7 @@ ok $ghost->visible, '$ghost is now visible';
 is $ghost->text, '👻', '$ghost now has text';
 
 note 'Form';
+############
 
 is_deeply [ map $_->attr('name'), $drv->('input,select') ], [
     'text', "text '", 'text "', 'text \\', 'text ☃',
@@ -120,3 +124,20 @@ while ( my ( $k, $v ) = each %values ) {
 
 cmp_deeply +URI->new( $drv->url )->query_form_hash, \%expected,
     'submit works on all form fields correctly';
+
+note 'Screenshot';
+##################
+
+my $png = $drv->screenshot;
+
+is substr( $png, 0, 8 ), "\211PNG\r\n\032\n", 'screenshot looks like a PNG';
+
+{
+    my $path = ( my $file = File::Temp->new )->filename;
+
+    $drv->screenshot($path);
+
+    local ( @ARGV, $/ ) = $path;
+
+    is scalar <>, $png, 'screenshot("file") matches screenshot';
+}
