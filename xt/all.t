@@ -18,7 +18,7 @@ use warnings;
 use Cwd ();
 use File::Temp;
 use Test::Deep;
-use Test::More tests => 21;
+use Test::More tests => 23;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -126,6 +126,16 @@ while ( my ( $k, $v ) = each %values ) {
 
 cmp_deeply +URI->new( $drv->url )->query_form_hash, \%expected,
     'submit works on all form fields correctly';
+
+my $elem = $drv->('input[type=text]');
+
+$elem->send_keys('Perl 🐪');
+
+is $elem->attr('value'), 'Perl 🐪', 'elem->send_keys';
+
+$elem->clear;
+
+is $elem->attr('value'), '', 'elem->clear';
 
 note 'JS';
 ##########
