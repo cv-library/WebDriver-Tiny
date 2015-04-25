@@ -10,7 +10,6 @@ use overload
 
 use HTTP::Tiny;
 use JSON::PP ();
-use Time::HiRes;
 use WebDriver::Tiny::Elements;
 
 our @CARP_NOT = 'WebDriver::Tiny::Elements';
@@ -156,7 +155,7 @@ sub find {
 
         last if @ids;
 
-        Time::HiRes::sleep( $args{sleep} // 0.1 );
+        select undef, undef, undef, $args{sleep} // .1;
     }
 
     if ( !@ids && !exists $args{dies} && !$args{dies} ) {
