@@ -148,6 +148,8 @@ sub find {
 
         @ids = map $_->{ELEMENT}, @{ $reply->{value} };
 
+        # FIXME This'll break when called on elems->find(), this always need
+        # to be $drv NOT $self.
         @ids = grep {
             $self->_req( GET => "/element/$_/displayed" )->{value}
         } @ids if $must_be_visible;
