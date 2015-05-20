@@ -66,6 +66,8 @@ Accessor to get/set the C<base_url> after instantiation.
 
  my $return = $drv->execute('return 1 + 1');
 
+=head3 execute_phantom
+
 =head3 find
 
  my @array_of_elements $drv->find('.class');

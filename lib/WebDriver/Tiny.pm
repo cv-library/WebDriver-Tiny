@@ -190,6 +190,13 @@ sub execute {
         ->{value};
 }
 
+sub execute_phantom {
+    my ( $self, $script, @args ) = @_;
+
+    $self->_req( POST => '/phantom/execute', { script => $script, args => \@args } )
+        ->{value};
+}
+
 sub get {
     my ( $self, $url ) = @_;
 
