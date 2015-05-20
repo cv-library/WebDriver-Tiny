@@ -27,6 +27,7 @@ is_deeply [ sort keys %got ], [ qw/
     delete_cookie
     dismiss_alert
     execute
+    execute_phantom
     find
     get
     import
