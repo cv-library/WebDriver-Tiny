@@ -20,6 +20,7 @@ is_deeply [ sort keys %got ], [ qw/
     __ANON__
     _req
     accept_alert
+    back
     base_url
     capabilities
     close_page
@@ -29,10 +30,12 @@ is_deeply [ sort keys %got ], [ qw/
     execute
     execute_phantom
     find
+    forward
     get
     import
     new
     page_ids
+    refresh
     screenshot
     source
     switch_page
