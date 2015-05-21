@@ -186,7 +186,7 @@ Get the URL of the current page.
 
  my $user_agent = $drv->user_agent;
 
-=head2 Window
+=head2 Window Management
 
 =head3 close_page
 
@@ -211,6 +211,12 @@ Close the current page.
 =head3 switch_page
 
  $drv->switch_page($page_id);
+
+=head3 window_maximize
+
+ $drv->window_maximize;          # Defaults to "current".
+ $drv->window_maximize;          # Same as above.
+ $drv->window_maximize('foo');   # Maximize window "foo".
 
 =head3 window_size
 

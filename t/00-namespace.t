@@ -42,6 +42,7 @@ is_deeply [ sort keys %got ], [ qw/
     title
     url
     user_agent
+    window_maximize
     window_size
 / ], "WebDriver::Tiny has the correct stuff in it's namespace";
 

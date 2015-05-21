@@ -2,11 +2,17 @@
 #   - Gives PhantomJS longer to start before we need it.
 #   - Fork early when the memory consumption is at it's lowest.
 BEGIN {
-    exec qw/
-        phantomjs
-        --webdriver=1337
-        --webdriver-loglevel=ERROR
-        / unless my $pid = fork;
+    my $pid;
+
+    unless ( $pid = fork ) {
+        close STDOUT;
+
+        exec qw/
+            phantomjs
+            --webdriver=1337
+            --webdriver-loglevel=ERROR
+            /;
+    }
 
     END { kill 15, $pid }
 }
@@ -18,7 +24,8 @@ use warnings;
 use Cwd ();
 use File::Temp;
 use Test::Deep;
-use Test::More tests => 23;
+use Test::Fatal;
+use Test::More tests => 29;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -159,7 +166,7 @@ is substr( $png, 0, 8 ), "\211PNG\r\n\032\n", 'screenshot looks like a PNG';
     is scalar <>, $png, 'screenshot("file") matches screenshot';
 }
 
-note 'Window Size';
+note 'Window Management';
 ###################
 
 $drv->window_size( 640, 480 );
@@ -167,7 +174,26 @@ $drv->window_size( 640, 480 );
 is_deeply $drv->execute('return [ window.innerWidth, window.innerHeight ]'),
     [ 640, 480 ], 'window_size( 640, 480 )';
 
+is_deeply [ $drv->window_size ], [ 640, 480 ], 'window_size';
+
 $drv->window_size( 800, 600 );
 
 is_deeply $drv->execute('return [ window.innerWidth, window.innerHeight ]'),
     [ 800, 600 ], 'window_size( 800, 600 )';
+
+is_deeply [ $drv->window_size ], [ 800, 600 ], 'window_size';
+
+$drv->window_maximize;
+
+is_deeply [ $drv->window_size ], [ 1366, 768 ], 'window_maximize';
+
+$drv->window_size( 800, 600 );
+
+is_deeply [ $drv->window_size ], [ 800, 600 ], 'window_size';
+
+$drv->window_maximize('current');
+
+is_deeply [ $drv->window_size ], [ 1366, 768 ], 'window_maximize("current")';
+
+like exception { $drv->window_maximize('foo') },
+    qr(\QWindow handle/name 'foo' is invalid (closed?)), 'window_maximize("foo")';

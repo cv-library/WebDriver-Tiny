@@ -242,6 +242,10 @@ sub switch_page {
 
 sub user_agent { $_[0]->execute('return window.navigator.userAgent') }
 
+sub window_maximize {
+    $_[0]->_req( POST => '/window/' . ( $_[1] // 'current' ) . '/maximize' );
+}
+
 sub window_size {
     my ( $self, $w, $h ) = @_;
 
@@ -252,7 +256,7 @@ sub window_size {
         return $self;
     }
 
-    $self->_req( GET => '/window/current/size' )->{value};
+    @{ $self->_req( GET => '/window/current/size' )->{value} }{qw/width height/};
 }
 
 sub _req {
