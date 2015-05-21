@@ -152,9 +152,9 @@ Maximum number of attempts to try and find a match.
 
  $drv->get($url);
 
-=head3 reload
+=head3 refresh
 
- $drv->reload;
+ $drv->refresh;
 
 =head2 Properties
 

@@ -86,12 +86,15 @@ sub new {
 
 sub capabilities { $_[0][3] }
 
-sub page_ids { $_[0]->_req( GET => '/window_handles' )->{value} }
-sub source   { $_[0]->_req( GET => '/source'         )->{value} }
-sub title    { $_[0]->_req( GET => '/title'          )->{value} }
-sub url      { $_[0]->_req( GET => '/url'            )->{value} }
+sub page_ids { $_[0]->_req( GET  => '/window_handles' )->{value} }
+sub source   { $_[0]->_req( GET  => '/source'         )->{value} }
+sub title    { $_[0]->_req( GET  => '/title'          )->{value} }
+sub url      { $_[0]->_req( GET  => '/url'            )->{value} }
 
-sub close_page { $_[0]->_req( DELETE => '/window' ); $_[0] }
+sub back       { $_[0]->_req( POST   => '/back'    ); $_[0] }
+sub close_page { $_[0]->_req( DELETE => '/window'  ); $_[0] }
+sub forward    { $_[0]->_req( POST   => '/forward' ); $_[0] }
+sub refresh    { $_[0]->_req( POST   => '/refresh' ); $_[0] }
 
 sub accept_alert {
     $_[0]->_req( POST => '/accept_alert' ) if $_[0][3]{handlesAlerts};
