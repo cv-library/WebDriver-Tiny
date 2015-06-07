@@ -55,7 +55,7 @@ B<WARNING>: The API of this module is unstable and may change without warning
 
 This module imports L<custom charnames|charnames/CUSTOM_ALIASES> for sending
 keys that would othesrwise be hard to represent in text. Each code point falls
-inside the Unicode PUA (Private Use Area), 0xE000-0xF8FF, and are as follows:
+inside the Unicode Private Use Area (U+E000–U+F8FF), and are as follows:
 
 =over
 
