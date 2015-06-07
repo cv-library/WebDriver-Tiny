@@ -234,9 +234,17 @@ The following set the window's position, returning C<$self> to allow chaining.
 
 =head3 window_size
 
- my ( $width, $height ) = $drv->window_size;
+The following get the window's size, returning a list of C<width> and C<height>.
 
- $drv->window_size( $width, $height );
+ my ( $w, $h ) = $drv->window_size;                  # Get size of current window.
+ my ( $w, $h ) = $drv->window_size('current');       # Same as above.
+ my ( $w, $h ) = $drv->window_size('foo');           # Get size of window "foo".
+
+The following set the window's size, returning C<$self> to allow chaining.
+
+ $drv->window_size( $w, $h );                        # Set size of current window.
+ $drv->window_size( current => $w, $h );             # Same as above.
+ $drv->window_size( foo     => $w, $h );             # Set size of window "foo".
 
 =head1 SEE ALSO
 

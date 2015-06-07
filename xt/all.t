@@ -25,7 +25,7 @@ use Cwd ();
 use File::Temp;
 use Test::Deep;
 use Test::Fatal;
-use Test::More tests => 29;
+use Test::More tests => 30;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -169,7 +169,9 @@ is substr( $png, 0, 8 ), "\211PNG\r\n\032\n", 'screenshot looks like a PNG';
 note 'Window Management';
 ###################
 
-$drv->window_size( 640, 480 );
+my $ret = $drv->window_size( 640, 480 );
+
+is_deeply $ret, $drv, 'window_size returns $self';
 
 is_deeply $drv->execute('return [ window.innerWidth, window.innerHeight ]'),
     [ 640, 480 ], 'window_size( 640, 480 )';
@@ -187,7 +189,7 @@ $drv->window_maximize;
 
 is_deeply [ $drv->window_size ], [ 1366, 768 ], 'window_maximize';
 
-$drv->window_size( 800, 600 );
+$drv->window_size( current => 800, 600 );
 
 is_deeply [ $drv->window_size ], [ 800, 600 ], 'window_size';
 

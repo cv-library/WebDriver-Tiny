@@ -261,16 +261,17 @@ sub window_position {
 }
 
 sub window_size {
-    my ( $self, $w, $h ) = @_;
+    my $self = shift;
 
-    if ( @_ == 3 ) {
-        $self->_req(
-            POST => '/window/current/size', { width => $w, height => $h } );
+    return @{
+        $self->_req( GET => '/window/' . ( $_[0] // 'current' ) . '/size' )->{value}
+    }{qw/width height/} if @_ < 2;
 
-        return $self;
-    }
+    my ( $handle, $w, $h) = @_ == 2 ? ( 'current', @_ ) : @_;
 
-    @{ $self->_req( GET => '/window/current/size' )->{value} }{qw/width height/};
+    $self->_req( POST => "/window/$handle/size", { width => $w, height => $h } );
+
+    $self;
 }
 
 sub _req {
