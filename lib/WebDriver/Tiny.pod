@@ -32,7 +32,23 @@ WebDriver::Tiny - Selenium 2.0 bindings for Perl
 
 =head1 DESCRIPTION
 
-TODO
+=over
+
+Selenium automates browsers. That's it! What you do with that power is
+entirely up to you. Primarily, it is for automating web applications for
+testing purposes, but is certainly not limited to just that. Boring web-based
+administration tasks can (and should!) also be automated as well.
+
+Selenium has the support of some of the largest browser vendors who have taken
+(or are taking) steps to make Selenium a native part of their browser. It is
+also the core technology in countless other browser automation tools, APIs and
+frameworks.
+
+L<http://www.seleniumhq.org>
+
+=back
+
+B<WARNING>: The API of this module is unstable and may change without warning (any change will be appropriately documented in the changelog).
 
 =head1 IMPORT
 
