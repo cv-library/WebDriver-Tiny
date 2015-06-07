@@ -246,6 +246,20 @@ sub window_maximize {
     $_[0]->_req( POST => '/window/' . ( $_[1] // 'current' ) . '/maximize' );
 }
 
+sub window_position {
+    my $self = shift;
+
+    return @{
+        $self->_req( GET => '/window/' . ( $_[0] // 'current' ) . '/position' )->{value}
+    }{'x', 'y'} if @_ < 2;
+
+    my ( $handle, $x, $y ) = @_ == 2 ? ( 'current', @_ ) : @_;
+
+    $self->_req( POST => "/window/$handle/position", { 'x' => $x, 'y' => $y } );
+
+    $self;
+}
+
 sub window_size {
     my ( $self, $w, $h ) = @_;
 

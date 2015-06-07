@@ -214,9 +214,23 @@ Close the current page.
 
 =head3 window_maximize
 
- $drv->window_maximize;          # Defaults to "current".
- $drv->window_maximize;          # Same as above.
- $drv->window_maximize('foo');   # Maximize window "foo".
+ $drv->window_maximize;              # Maximize current window.
+ $drv->window_maximize('current');   # Same as above.
+ $drv->window_maximize('foo');       # Maximize window "foo".
+
+=head3 window_position
+
+The following get the window's position, returning a list of C<x> and C<y>.
+
+ my ( $x, $y ) = $drv->window_position;              # Get position of current window.
+ my ( $x, $y ) = $drv->window_position('current');   # Same as above.
+ my ( $x, $y ) = $drv->window_position('foo');       # Get position of window "foo".
+
+The following set the window's position, returning C<$self> to allow chaining.
+
+ $drv->window_position( $x, $y );                    # Set position of current window.
+ $drv->window_position( current => $x, $y );         # Same as above.
+ $drv->window_position( foo     => $x, $y );         # Set position of window "foo".
 
 =head3 window_size
 
