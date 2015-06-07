@@ -48,7 +48,8 @@ L<http://www.seleniumhq.org>
 
 =back
 
-B<WARNING>: The API of this module is unstable and may change without warning (any change will be appropriately documented in the changelog).
+B<WARNING>: The API of this module is unstable and may change without warning
+(any change will be appropriately documented in the changelog).
 
 =head1 IMPORT
 
