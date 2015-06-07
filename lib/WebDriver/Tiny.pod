@@ -53,7 +53,7 @@ B<WARNING>: The API of this module is unstable and may change without warning
 
 =head1 IMPORT
 
-This module imports custom L<charnames#CUSTOM_ALIASES> for sending keys that
+This module imports custom L<charnames/CUSTOM_ALIASES> for sending keys that
 would otherwise be hard to represent in text. Each code point falls inside the
 Unicode PUA (Private Use Area), 0xE000-0xF8FF, and are as follows:
 
