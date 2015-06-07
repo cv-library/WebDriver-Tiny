@@ -1,7 +1,6 @@
-package WebDriver::Tiny;
+package WebDriver::Tiny 0.001;
 
-use 5.010;
-use strict;
+use 5.014;
 use warnings;
 
 # Allow "cute" $drv->('selector') syntax.
@@ -13,12 +12,8 @@ use JSON::PP ();
 use WebDriver::Tiny::Elements;
 
 our @CARP_NOT = 'WebDriver::Tiny::Elements';
-our $VERSION  = 0.001;
 
 sub import {
-    # Perl 5.14 or higher needed to create custom charnames.
-    return if $] < 5.014;
-
     # From https://w3c.github.io/webdriver/webdriver-spec.html#sendkeys
     state $chars = {
         WD_NULL            => 57344, WD_CANCEL     => 57345,
