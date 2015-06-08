@@ -4,8 +4,18 @@ use 5.014;
 use warnings;
 
 # Allow "cute" $drv->('selector') syntax.
+#
+# Caching the closure is around twice as fast, weaken to avoid $self
+# circularly referencing $self.
 use overload
-    fallback => 1, '&{}' => sub { my $self = $_[0]; sub { $self->find(@_) } };
+    fallback => 1,
+    '&{}'    => sub {
+        $_[0][4] ||= do {
+            Scalar::Util::weaken( my $self = $_[0] );
+
+            sub { $self->find(@_) };
+        };
+    };
 
 use HTTP::Tiny;
 use JSON::PP ();
