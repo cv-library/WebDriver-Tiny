@@ -114,11 +114,13 @@ sub dismiss_alert {
 }
 
 sub base_url {
-    my ( $self, $url ) = @_;
+    if ( @_ == 2 ) {
+        $_[0][2] = $_[1] // '';
 
-    $self->[2] = $url // '' if @_ == 2;
+        return $_[0];
+    }
 
-    $self->[2];
+    $_[0][2];
 }
 
 sub cookies {
@@ -249,6 +251,8 @@ sub user_agent { $_[0]->execute('return window.navigator.userAgent') }
 
 sub window_maximize {
     $_[0]->_req( POST => '/window/' . ( $_[1] // 'current' ) . '/maximize' );
+
+    $_[0];
 }
 
 sub window_position {
