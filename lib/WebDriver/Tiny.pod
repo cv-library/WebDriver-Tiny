@@ -315,7 +315,7 @@ Get the source code of the current page.
 
 =head3 url
 
- my $url = $drv->title;
+ my $url = $drv->url;
 
 Get the URL of the current page.
 
