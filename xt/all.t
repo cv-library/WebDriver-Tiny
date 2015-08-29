@@ -25,7 +25,7 @@ use Cwd ();
 use File::Temp;
 use Test::Deep;
 use Test::Fatal;
-use Test::More tests => 30;
+use Test::More tests => 31;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -73,6 +73,14 @@ is_deeply $drv->cookies, {}, 'cookies';
 
 cmp_deeply $drv->page_ids,
     [ re qr/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/ ], 'page_ids';
+
+{
+    open my $fh, '<:encoding(UTF-8)', 'xt/test.html';
+
+    local $/;
+
+    is $drv->source =~ s/\s//gr, <$fh> =~ s/\s//gr, 'source';
+}
 
 is $drv->('h1')->text, 'ᴛ̲ʜ̲ᴇ̲ʀ̲ᴇ̲ ̲ɪ̲s̲ ̲ɴ̲ᴏ̲ ̲U̲ɴ̲ɪ̲ᴄ̲ᴏ̲ᴅ̲ᴇ̲ ̲ᴍ̲ᴀ̲ɢ̲ɪ̲ᴄ̲ ̲ʙ̲ᴜ̲ʟ̲ʟ̲ᴇ̲ᴛ̲', 'text';
 
@@ -167,7 +175,7 @@ is substr( $png, 0, 8 ), "\211PNG\r\n\032\n", 'screenshot looks like a PNG';
 }
 
 note 'Window Management';
-###################
+#########################
 
 my $ret = $drv->window_size( 640, 480 );
 
