@@ -1,5 +1,10 @@
 use lib 't';
-use t   '2';
+use t   '3';
+
+eval { WebDriver::Tiny->new };
+
+is $@, 'WebDriver::Tiny - Missing required parameter "port" at ' . __FILE__
+    . ' line ' . ( __LINE__ - 3 ) . ".\n", 'Port is required';
 
 my $drv = WebDriver::Tiny->new( port => 1 );
 
