@@ -10,5 +10,5 @@ args_are [
 
 undef $drv;
 
-args_are [ DELETE => 'http://localhost:1/session/:sid', {} ],
+args_are [ DELETE => 'http://localhost:1/session/:sid' ],
     'Session is removed at destruction time';

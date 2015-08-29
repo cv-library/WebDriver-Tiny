@@ -296,7 +296,7 @@ sub _req {
     my $reply = $self->[0]->_request(
         $method,
         $self->[1] . $path,
-        $args ? { content => JSON::PP::encode_json $args } : {},
+        $args ? { content => JSON::PP::encode_json $args } : (),
     );
 
     unless ( $reply->{success} ) {
