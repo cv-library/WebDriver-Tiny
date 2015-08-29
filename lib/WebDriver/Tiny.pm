@@ -317,6 +317,6 @@ sub _req {
     JSON::PP::decode_json $reply->{content};
 }
 
-sub DESTROY { $_[0]->_req( DELETE => '' ) }
+sub DESTROY { $_[0]->_req( DELETE => '' ) if $_[0][3] }
 
 1;
