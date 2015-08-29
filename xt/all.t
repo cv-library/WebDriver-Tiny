@@ -1,6 +1,6 @@
 # Fork & spawn PhantomJS as soon as possible, the reason for this is twofold:
 #   - Gives PhantomJS longer to start before we need it.
-#   - Fork early when the memory consumption is at it's lowest.
+#   - Fork early when the memory consumption is at its lowest.
 BEGIN {
     my $pid;
 
