@@ -1,4 +1,6 @@
-0.002 ???
+0.003 ???
+
+0.002 2015-07-05
     - $drv->() caches the closure and is now twice as fast.
     - $drv->base_url('foo'), and $drv->window_maximize now return $self.
 
