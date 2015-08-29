@@ -40,7 +40,7 @@ my %chars = (
     WD_ZENKAKU_HANKAKU => 57408,
 );
 
-is charnames::vianame($_), undef, "$_ is unimported" for sort keys %chars;
+is charnames::vianame($_), undef, "$_ isn't imported" for sort keys %chars;
 
 {
     use WebDriver::Tiny;
