@@ -1,7 +1,7 @@
 use lib 't';
 use t '7';
 
-my $drv = WebDriver::Tiny->new;
+my $drv = WebDriver::Tiny->new( port => 1 );
 
 is $drv->base_url, '';
 

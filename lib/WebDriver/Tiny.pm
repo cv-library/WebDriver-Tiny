@@ -65,18 +65,24 @@ sub import {
 sub new {
     my ( $class, %args ) = @_;
 
+    unless ( exists $args{port} ) {
+        require Carp;
+
+        Carp::croak qq/$class - Missing required parameter "port"/;
+    }
+
     $args{host} //= 'localhost';
-    $args{port} //= 4444;
+    $args{path} //= '';
 
     my $self = bless [
         # FIXME Keep alive can make PhantomJS return a 400 bad request :-S.
         HTTP::Tiny->new( keep_alive => 0 ),
-        "http://$args{host}:$args{port}/wd/hub/session",
+        "http://$args{host}:$args{port}$args{path}/session",
         $args{base_url} // '',
     ], $class;
 
     my $reply = $self->_req(
-        POST => '', { desiredCapabilities => { browserName => 'firefox' } } );
+        POST => '', { desiredCapabilities => $args{capabilities} // {} } );
 
     $self->[1] .= '/' . $reply->{sessionId};
 

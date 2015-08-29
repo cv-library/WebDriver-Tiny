@@ -51,6 +51,32 @@ L<http://www.seleniumhq.org>
 B<WARNING>: The API of this module is unstable and may change without warning
 (any change will be appropriately documented in the changelog).
 
+=head1 USAGE
+
+The usage of this module varies greatly depending on which backend your're
+targetting, below are some examples:
+
+=head2 ChromeDriver
+
+ my $drv = WebDriver::Tiny->new(
+     capabilities => {
+         chromeOptions => { binary => '/usr/bin/google-chrome' },
+     },
+     port => 9515,
+ );
+
+=head2 PhantomJS
+
+ my $drv = WebDriver::Tiny->new( port => 8910 );
+
+=head2 Selenium
+
+ my $drv = WebDriver::Tiny->new(
+     capabilities => { browserName => 'firefox' },
+     path         => '/wd/hub',
+     port         => 4444,
+ );
+
 =head1 IMPORT
 
 This module imports L<custom charnames|charnames/CUSTOM_ALIASES> for sending

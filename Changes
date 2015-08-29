@@ -1,4 +1,6 @@
 0.003 ???
+    - Add support for ChromDriver.
+    - Document how to use different backends.
 
 0.002 2015-07-05
     - $drv->() caches the closure and is now twice as fast.
