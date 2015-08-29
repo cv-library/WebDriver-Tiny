@@ -163,7 +163,7 @@ is substr( $png, 0, 8 ), "\211PNG\r\n\032\n", 'screenshot looks like a PNG';
 
     local ( @ARGV, $/ ) = $path;
 
-    is scalar <>, $png, 'screenshot("file") matches screenshot';
+    is <>, $png, 'screenshot("file") matches screenshot';
 }
 
 note 'Window Management';
