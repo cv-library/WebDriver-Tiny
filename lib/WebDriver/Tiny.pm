@@ -24,7 +24,7 @@ use WebDriver::Tiny::Elements;
 our @CARP_NOT = 'WebDriver::Tiny::Elements';
 
 sub import {
-    # From https://w3c.github.io/webdriver/webdriver-spec.html#sendkeys
+    # From http://www.w3.org/TR/webdriver/#sendkeys
     state $chars = {
         WD_NULL            => 57344, WD_CANCEL     => 57345,
         WD_HELP            => 57346, WD_BACK_SPACE => 57347,
