@@ -28,12 +28,13 @@ is_deeply [ sort keys %got ], [ qw/
     cookie_delete
     cookies
     dismiss_alert
-    execute
-    execute_phantom
     find
     forward
     get
     import
+    js
+    js_async
+    js_phantom
     new
     page_ids
     refresh

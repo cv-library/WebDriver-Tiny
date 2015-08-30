@@ -25,7 +25,7 @@ use Cwd ();
 use File::Temp;
 use Test::Deep;
 use Test::Fatal;
-use Test::More tests => 35;
+use Test::More tests => 37;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -140,7 +140,7 @@ is $ghost->tag, 'h2', '$ghost->tag';
 is $ghost->text, '', '$ghost->text';
 ok !$ghost->visible, '$ghost->visible';
 
-$drv->execute( 'arguments[0].style.display = "block"', $ghost );
+$drv->js( 'arguments[0].style.display = "block"', $ghost );
 
 ok $ghost->visible, '$ghost is now visible';
 is $ghost->text, '👻', '$ghost now has text';
@@ -189,10 +189,15 @@ $elem->clear;
 
 is $elem->attr('value'), '', 'elem->clear';
 
-note 'JS';
-##########
+note 'JavaScript';
+##################
 
-is $drv->execute('return "foo"'), 'foo', q/execute('return "foo"')/;
+is $drv->js('return "foo"'), 'foo', q/js('return "foo"')/;
+
+is $drv->js_async('arguments[0]("bar")'), 'bar',
+    q/js_async('arguments[0]("bar")')/;
+
+is $drv->js_phantom('return "baz"'), 'baz', q/js_phantomjs('return "baz"')/;
 
 note 'Screenshot';
 ##################
@@ -218,14 +223,14 @@ my $ret = $drv->window_size( 640, 480 );
 
 is_deeply $ret, $drv, 'window_size returns $self';
 
-is_deeply $drv->execute('return [ window.innerWidth, window.innerHeight ]'),
+is_deeply $drv->js('return [ window.innerWidth, window.innerHeight ]'),
     [ 640, 480 ], 'window_size( 640, 480 )';
 
 is_deeply [ $drv->window_size ], [ 640, 480 ], 'window_size';
 
 $drv->window_size( 800, 600 );
 
-is_deeply $drv->execute('return [ window.innerWidth, window.innerHeight ]'),
+is_deeply $drv->js('return [ window.innerWidth, window.innerHeight ]'),
     [ 800, 600 ], 'window_size( 800, 600 )';
 
 is_deeply [ $drv->window_size ], [ 800, 600 ], 'window_size';

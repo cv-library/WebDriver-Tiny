@@ -51,7 +51,7 @@ sub submit {
     #
     # This improves performance at the cost of having to read JS ;-)
     my $drv   = $self->[0];
-    my $elems = $drv->execute( <<'JS', { ELEMENT => $self->[1] }, \%values );
+    my $elems = $drv->js( <<'JS', { ELEMENT => $self->[1] }, \%values );
         'use strict';
 
         var form = arguments[0], values = arguments[1], click = [], keys = [];

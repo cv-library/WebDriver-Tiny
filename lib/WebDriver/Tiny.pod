@@ -225,12 +225,6 @@ Accessor to get/set the C<base_url> after instantiation.
 
 =head2 Actions
 
-=head3 execute
-
- my $return = $drv->execute('return 1 + 1');
-
-=head3 execute_phantom
-
 =head3 find
 
  my @array_of_elements $drv->find('.class');
@@ -318,6 +312,24 @@ Maximum number of attempts to try and find a match.
 
  # Get a hashref of all cookies.
  my $cookies = $drv->cookies;
+
+=head2 JavaScript
+
+=head3 js
+
+ my $return = $drv->js('return "foo"');
+
+=head3 js_async
+
+ my $return = $drv->js_async(<<'JS');
+     let callback = arguments[0];
+
+     callback("bar");
+ JS
+
+=head3 js_phantom
+
+ my $return = $drv->js_phantomjs('return "baz"');
 
 =head2 Navigation
 

@@ -212,23 +212,20 @@ sub find {
               : bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
 }
 
-sub execute {
-    my ( $self, $script, @args ) = @_;
+my $js = sub {
+    my ( $path, $self, $script, @args ) = @_;
 
     # Currently only takes the first ID in the collection, this should change.
     $_ = { ELEMENT => $_->[1] }
         for grep ref eq 'WebDriver::Tiny::Elements', @args;
 
-    $self->_req( POST => '/execute', { script => $script, args => \@args } )
+    $self->_req( POST => $path, { script => $script, args => \@args } )
         ->{value};
-}
+};
 
-sub execute_phantom {
-    my ( $self, $script, @args ) = @_;
-
-    $self->_req( POST => '/phantom/execute', { script => $script, args => \@args } )
-        ->{value};
-}
+sub js         { unshift @_, '/execute';         goto $js }
+sub js_async   { unshift @_, '/execute_async';   goto $js }
+sub js_phantom { unshift @_, '/phantom/execute'; goto $js }
 
 sub get {
     my ( $self, $url ) = @_;
@@ -270,7 +267,7 @@ sub switch_page {
     $self;
 }
 
-sub user_agent { $_[0]->execute('return window.navigator.userAgent') }
+sub user_agent { $js->( '/execute', $_[0], 'return window.navigator.userAgent') }
 
 sub window_maximize {
     $_[0]->_req( POST => '/window/' . ( $_[1] // 'current' ) . '/maximize' );
