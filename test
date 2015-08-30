@@ -82,7 +82,7 @@ our @backends = (
 );
 
 # FIXME Hack for Travis for now.
-shift @backends unless -e '~/Downloads/chromedriver';
+shift @backends unless -e "$ENV{HOME}/Downloads/chromedriver";
 
 our $url = 'file://' . Cwd::fastcwd . '/xt/test.html';
 
