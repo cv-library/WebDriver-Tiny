@@ -52,6 +52,11 @@ including their descendants.
 The following methods merely return information about this collection or
 return a new collection, none of them involve a call to the server.
 
+=head3 append
+
+Returns a new collection containing all the elements in the original plus any
+that were passed as arguments.
+
 =head3 first
 
 Returns a new collection containing only the first element in this collection.
@@ -81,6 +86,11 @@ containing one element.
  @elems = $elems->split;
 
  $elems->split == $elems->size;  # true
+
+=head3 uniq
+
+Returns a new collection containing no duplicate elements, order is not
+preserved.
 
 =head2 Other
 

@@ -58,6 +58,7 @@ is_deeply [ sort keys %got ], [ qw/
     BEGIN
     VERSION
     _req
+    append
     attr
     clear
     click
@@ -79,5 +80,6 @@ is_deeply [ sort keys %got ], [ qw/
     tag
     tap
     text
+    uniq
     visible
 / ], "WebDriver::Tiny::Elements has the correct stuff in it's namespace";

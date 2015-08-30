@@ -2,9 +2,12 @@ use strict;
 use warnings;
 
 use WebDriver::Tiny::Elements;
-use Test::More tests => 10;
+use Test::Deep;
+use Test::More tests => 12;
 
-my $e = bless [ 'd', 1..9 ], 'WebDriver::Tiny::Elements';
+sub make { bless [ 'd', @_ ], 'WebDriver::Tiny::Elements' }
+
+my $e = make( 1..9 );
 
 is_deeply $e->first, [ 'd', 1 ], '->first';
 
@@ -24,5 +27,10 @@ is_deeply $e->slice(9), [ 'd', undef ], '->slice(9)';
 
 is_deeply $e->slice( -1, 0, 1, 3, 7, 12 ), [ 'd', 9, 1, 2, 4, 8, undef ],
     '->slice( -1, 0, 1, 3, 7, 12 )';
+
+is_deeply $e->append( make( 10, 11 ), make( 12 ) ), [ 'd', 1..12 ],
+    '->append';
+
+cmp_bag [ @{ $e->append( make( 6, 9 ) )->uniq } ], [ 'd', 1..9 ], '->uniq';
 
 is_deeply $e, [ 'd', 1..9 ], 'Original is unaffected';

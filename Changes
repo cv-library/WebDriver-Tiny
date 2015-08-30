@@ -6,7 +6,7 @@
     - Add support for asynchronous JavaScript.
     - Rename execute to js.
     - Rename execute_phantom to js_phantom.
-    - Add a split method to element collections.
+    - Add append, split, and uniq methods to element collections.
 
 0.002 2015-07-05
     - $drv->() caches the closure and is now twice as fast.
