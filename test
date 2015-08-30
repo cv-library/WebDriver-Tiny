@@ -87,4 +87,4 @@ shift @backends unless -e '~/Downloads/chromedriver';
 our $url = 'file://' . Cwd::fastcwd . '/xt/test.html';
 
 exit TAP::Harness->new( { color => 1, verbosity => 1 } )
-    ->runtests(<{t,xt}/*.t>)->exit;
+    ->runtests( @ARGV ? @ARGV : <{t,xt}/*.t> )->exit;
