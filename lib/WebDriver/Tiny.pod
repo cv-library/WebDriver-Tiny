@@ -289,17 +289,35 @@ Maximum number of attempts to try and find a match.
 
 =head2 Cookies
 
-=head3 cookies
+=head3 cookie
 
- my $cookies = $drv->cookies;
+ # Get cookie "foo".
+ my $cookie = $drv->cookie('foo');
 
-=head3 delete_cookie
+ # Set cookie "foo".
+ $drv->cookie( foo => 'value' );
+
+ # Or
+ $drv->cookie(
+     foo      => 'value',
+     domain   => 'example.com',
+     expires  => 123,
+     httponly => 0,
+     secure   => 1,
+ );
+
+=head3 cookie_delete
 
  # Delete all cookies.
- $drv->delete_cookie;
+ $drv->cookie_delete;
 
  # Delete cookie "foo".
- $drv->delete_cookie('foo');
+ $drv->cookie_delete('foo');
+
+=head3 cookies
+
+ # Get a hashref of all cookies.
+ my $cookies = $drv->cookies;
 
 =head2 Navigation
 

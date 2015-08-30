@@ -129,6 +129,31 @@ sub base_url {
     $_[0][2];
 }
 
+sub cookie {
+    my ( $self, $name, $value, @args ) = @_;
+
+    if ( @_ == 2 ) {
+        my $cookie = $self->_req( GET => "/cookie/$name" )->{value};
+
+        # FIXME PhantomJS returns all cookies.
+        return ref $cookie eq 'ARRAY'
+            ? grep $_->{name} eq $name, @$cookie : $cookie;
+    }
+
+    $self->_req( POST => '/cookie',
+        { cookie => { name => $name, value => $value, @args } } );
+
+    $self;
+}
+
+sub cookie_delete {
+    my $self = shift;
+
+    $self->_req( DELETE => '/cookie' . ( @_ ? '/' . shift // '' : '' ) );
+
+    $self;
+}
+
 sub cookies {
     +{
         map { $_->{name} => $_ }
@@ -185,14 +210,6 @@ sub find {
 
     wantarray ? map { bless [ $self, $_ ], 'WebDriver::Tiny::Elements' } @ids
               : bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
-}
-
-sub delete_cookie {
-    my $self = shift;
-
-    $self->_req( DELETE => '/cookie' . ( @_ ? '/' . shift // '' : '' ) );
-
-    $self;
 }
 
 sub execute {

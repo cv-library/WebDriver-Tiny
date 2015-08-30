@@ -24,8 +24,9 @@ is_deeply [ sort keys %got ], [ qw/
     base_url
     capabilities
     close_page
+    cookie
+    cookie_delete
     cookies
-    delete_cookie
     dismiss_alert
     execute
     execute_phantom

@@ -25,7 +25,7 @@ use Cwd ();
 use File::Temp;
 use Test::Deep;
 use Test::Fatal;
-use Test::More tests => 31;
+use Test::More tests => 35;
 use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
@@ -69,8 +69,6 @@ cmp_deeply $drv->capabilities, {
     webStorageEnabled        => 0,
 }, 'capabilities';
 
-is_deeply $drv->cookies, {}, 'cookies';
-
 cmp_deeply $drv->page_ids,
     [ re qr/^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/ ], 'page_ids';
 
@@ -91,6 +89,45 @@ is $drv->url, $url, 'url';
 chomp( my $ver = `phantomjs -v` );
 
 like $drv->user_agent, qr( PhantomJS/\Q$ver\E ), 'user_agent';
+
+note 'Cookies';
+###############
+
+is_deeply $drv->cookies, {}, 'No cookies';
+
+$drv->cookie( foo => 'bar' );
+$drv->cookie( baz => 'qux', httponly => 1, path => Cwd::fastcwd );
+
+my $cookie = {
+    domain   => '',
+    httponly => bool(0),
+    name     => 'foo',
+    path     => Cwd::fastcwd . '/xt/',
+    secure   => bool(0),
+    value    => 'bar',
+};
+
+cmp_deeply $drv->cookie('foo'), $cookie, 'Cookie "foo" exists';
+
+cmp_deeply $drv->cookies, {
+    foo => $cookie,
+    baz => {
+        domain   => '',
+        httponly => bool(1),
+        name     => 'baz',
+        path     => Cwd::fastcwd,
+        secure   => bool(0),
+        value    => 'qux',
+    },
+}, 'Cookies exists';
+
+$drv->cookie_delete('foo');
+
+is_deeply [ keys %{ $drv->cookies } ], ['baz'], 'Only "baz" left';
+
+$drv->cookie_delete;
+
+is keys %{ $drv->cookies }, 0, 'No cookies left';
 
 note 'Ghost';
 #############
