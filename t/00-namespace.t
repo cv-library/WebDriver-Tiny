@@ -74,6 +74,7 @@ is_deeply [ sort keys %got ], [ qw/
     send_keys
     size
     slice
+    split
     submit
     tag
     tap

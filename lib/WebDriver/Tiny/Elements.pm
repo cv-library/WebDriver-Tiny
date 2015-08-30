@@ -8,6 +8,7 @@ sub first { bless [ @{ $_[0] }[ 0,  1 ] ] }
 sub last  { bless [ @{ $_[0] }[ 0, -1 ] ] }
 sub size  { $#{ $_[0] } }
 sub slice { my ( $drv, @ids ) = @{ +shift }; bless [ $drv, @ids[@_] ] }
+sub split { my ( $drv, @ids ) = @{ $_[0] }; map { bless [ $drv, $_ ] } @ids }
 
 sub attr { $_[0]->_req( GET => "/attribute/$_[1]" )->{value} }
 sub css  { $_[0]->_req( GET =>       "/css/$_[1]" )->{value} }

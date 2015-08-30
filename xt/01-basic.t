@@ -30,6 +30,14 @@ for my $backend (@::backends) {
 
     is $drv->('h1')->text, 'ᴛ̲ʜ̲ᴇ̲ʀ̲ᴇ̲ ̲ɪ̲s̲ ̲ɴ̲ᴏ̲ ̲U̲ɴ̲ɪ̲ᴄ̲ᴏ̲ᴅ̲ᴇ̲ ̲ᴍ̲ᴀ̲ɢ̲ɪ̲ᴄ̲ ̲ʙ̲ᴜ̲ʟ̲ʟ̲ᴇ̲ᴛ̲', 'text';
 
+    is $drv->('h3')->text, 'foo bar', 'text on more than one element';
+
+    is_deeply [ map $_->text, $drv->('h3') ], [qw/foo bar/],
+        'find is list context';
+
+    is_deeply [ map $_->text, $drv->('h3')->split ], [qw/foo bar/],
+        'split';
+
     is $drv->title, 'Frosty the ☃', 'title';
 
     is $drv->url, $::url, 'url';
