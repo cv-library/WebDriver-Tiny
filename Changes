@@ -1,5 +1,5 @@
 0.003 ???
-    - Add support for ChromDriver.
+    - Add support for ChromeDriver.
     - Document how to use different backends.
     - Add cookie getter/setter.
     - Rename delete_cookie to cookie_delete.
