@@ -43,6 +43,14 @@ for my $backend (@::backends) {
     is $drv->url, $::url, 'url';
 
     like $drv->user_agent, $backend->{user_agent}, 'user_agent';
+
+    $drv->( 'go to bottom', method => 'link_text' )->click;
+
+    is $drv->url, $::url . '#bottom', 'click';
+
+    $drv->( 'go to top', method => 'link_text' )->click;
+
+    is $drv->url, $::url . '#top', 'click';
 }
 
 done_testing;
