@@ -1,4 +1,4 @@
-package WebDriver::Tiny::Elements 0.003;
+package WebDriver::Tiny::Elements 0.004;
 
 use 5.014;
 use warnings;

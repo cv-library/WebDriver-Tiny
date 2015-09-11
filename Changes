@@ -1,4 +1,6 @@
-0.003 ???
+0.004 ???
+
+0.003 2015-09-11
     - Add support for ChromeDriver.
     - Document how to use different backends.
     - Add cookie getter/setter.
