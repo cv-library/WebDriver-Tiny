@@ -314,6 +314,9 @@ Maximum number of attempts to try and find a match.
  # Delete cookie "foo".
  $drv->cookie_delete('foo');
 
+ # Delete cookie "bar", and "baz".
+ $drv->cookie_delete(qw/bar baz/);
+
 =head3 cookies
 
  # Get a hashref of all cookies.

@@ -3,6 +3,7 @@
     - Document how to use different backends.
     - Add cookie getter/setter.
     - Rename delete_cookie to cookie_delete.
+    - Support cookie_delete(@list_of_cookies_to_delete).
     - Add support for asynchronous JavaScript.
     - Rename execute to js.
     - Rename execute_phantom to js_phantom.

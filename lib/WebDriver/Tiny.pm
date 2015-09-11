@@ -149,7 +149,12 @@ sub cookie {
 sub cookie_delete {
     my $self = shift;
 
-    $self->_req( DELETE => '/cookie' . ( @_ ? '/' . shift // '' : '' ) );
+    if (@_) {
+        $self->_req( DELETE => "/cookie/$_" ) for @_;
+    }
+    else {
+        $self->_req( DELETE => '/cookie' );
+    }
 
     $self;
 }
