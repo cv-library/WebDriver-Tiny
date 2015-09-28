@@ -1,4 +1,5 @@
 0.004 ???
+    - Require Carp 1.25 to ensure errors have periods on the end.
 
 0.003 2015-09-11
     - Add support for ChromeDriver.

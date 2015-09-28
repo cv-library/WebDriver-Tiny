@@ -17,6 +17,7 @@ use overload
         };
     };
 
+use Carp 1.25 ();
 use HTTP::Tiny;
 use JSON::PP ();
 use WebDriver::Tiny::Elements;
@@ -65,11 +66,8 @@ sub import {
 sub new {
     my ( $class, %args ) = @_;
 
-    unless ( exists $args{port} ) {
-        require Carp;
-
-        Carp::croak qq/$class - Missing required parameter "port"/;
-    }
+    Carp::croak qq/$class - Missing required parameter "port"/
+        unless exists $args{port};
 
     $args{host} //= 'localhost';
     $args{path} //= '';
@@ -204,11 +202,8 @@ sub find {
         select undef, undef, undef, $args{sleep} // .1;
     }
 
-    if ( !@ids && !exists $args{dies} && !$args{dies} ) {
-        require Carp;
-
-        Carp::croak ref $self, qq/->find failed for $method = "$_[1]"/;
-    }
+    Carp::croak ref $self, qq/->find failed for $method = "$_[1]"/
+        if !@ids && !exists $args{dies} && !$args{dies};
 
     # FIXME
     $self = $self->[0] if ref $self eq 'WebDriver::Tiny::Elements';
@@ -327,8 +322,6 @@ sub _req {
 
             JSON::PP::decode_json($msg)->{errorMessage}
         };
-
-        require Carp;
 
         Carp::croak ref $self, ' - ', $error // $reply->{content};
     }
