@@ -33,7 +33,7 @@ for my $backend (@::backends) {
     is $drv->('h3')->text, 'foo bar', 'text on more than one element';
 
     is_deeply [ map $_->text, $drv->('h3') ], [qw/foo bar/],
-        'find is list context';
+        'find in list context';
 
     is_deeply [ map $_->text, $drv->('h3')->split ], [qw/foo bar/],
         'split';
