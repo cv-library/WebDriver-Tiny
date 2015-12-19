@@ -130,13 +130,8 @@ sub base_url {
 sub cookie {
     my ( $self, $name, $value, @args ) = @_;
 
-    if ( @_ == 2 ) {
-        my $cookie = $self->_req( GET => "/cookie/$name" )->{value};
-
-        # FIXME PhantomJS returns all cookies.
-        return ref $cookie eq 'ARRAY'
-            ? grep $_->{name} eq $name, @$cookie : $cookie;
-    }
+    # GET /cookie/{name} isn't supported by ChromeDriver, so get all.
+    return $self->cookies->{$name} if @_ == 2;
 
     $self->_req( POST => '/cookie',
         { cookie => { name => $name, value => $value, @args } } );
@@ -158,10 +153,12 @@ sub cookie_delete {
 }
 
 sub cookies {
-    +{
-        map { $_->{name} => $_ }
-        @{ $_[0]->_req( GET => '/cookie' )->{value} // [] }
-    };
+    my @cookies = @{ $_[0]->_req( GET => '/cookie' )->{value} // [] };
+
+    # Map the incorrect key to the correct key.
+    $_->{httpOnly} //= delete $_->{httponly} for @cookies;
+
+    +{ map { $_->{name} => $_ } @cookies };
 }
 
 # NOTE This method can be called from a driver or a collection of elements.

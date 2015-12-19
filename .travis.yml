@@ -6,6 +6,6 @@ perl:
     - '5.18'
     - '5.16'
     - '5.14'
-install:       cpanm -n --skip-satisfied App::ForkProve Devel::Cover::Report::Coveralls
-script:        PERL5OPT=-MDevel::Cover ./test
+install:       cpanm -n --skip-satisfied Devel::Cover::Report::Coveralls HTTP::Server::Simple
+script:        PERL5OPT=-MDevel::Cover prove -lv t xt
 after_success: cover -report coveralls -select_re ^lib/

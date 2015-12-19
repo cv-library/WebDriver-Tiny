@@ -1,39 +1,34 @@
 use strict;
 use warnings;
 
-for my $backend (@::backends) {
-    note $backend->{name};
+sub {
+    my $drv = shift;
 
-    my $drv = WebDriver::Tiny->new( %{ $backend->{args} } );
-
-    $drv->get($::url);
+    $drv->get('http://localhost:8080');
 
     is_deeply $drv->cookies, {}, 'No cookies';
 
     $drv->cookie( foo => 'bar' );
-    $drv->cookie( baz => 'qux', httponly => 1, path => Cwd::fastcwd );
+    $drv->cookie( baz => 'qux', path => '/' );
 
     my $cookie = {
-        domain   => '',
-        httponly => bool(0),
+        domain   => 'localhost',
+        httpOnly => bool(0),
         name     => 'foo',
-        path     => Cwd::fastcwd . '/xt/',
+        path     => '/',
         secure   => bool(0),
         value    => 'bar',
     };
-
-    # FIXME Cookies & ChromeDriver doesn't work :-(
-    next if $backend->{name} eq 'ChromeDriver';
 
     cmp_deeply $drv->cookie('foo'), $cookie, 'Cookie "foo" exists';
 
     cmp_deeply $drv->cookies, {
         foo => $cookie,
         baz => {
-            domain   => '',
-            httponly => bool(1),
+            domain   => 'localhost',
+            httpOnly => bool(0),
             name     => 'baz',
-            path     => Cwd::fastcwd,
+            path     => '/',
             secure   => bool(0),
             value    => 'qux',
         },
@@ -47,5 +42,3 @@ for my $backend (@::backends) {
 
     is keys %{ $drv->cookies }, 0, 'No cookies left';
 }
-
-done_testing;

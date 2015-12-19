@@ -2,12 +2,8 @@ use strict;
 use utf8;
 use warnings;
 
-for my $backend (@::backends) {
-    note $backend->{name};
-
-    my $drv = WebDriver::Tiny->new( %{ $backend->{args} } );
-
-    $drv->get($::url);
+sub {
+    my $drv = shift;
 
     my $ghost = $drv->('body')->find('#ghost');
 
@@ -21,6 +17,4 @@ for my $backend (@::backends) {
 
     ok $ghost->visible, '$ghost is now visible';
     is $ghost->text, '👻', '$ghost now has text';
-}
-
-done_testing;
+};

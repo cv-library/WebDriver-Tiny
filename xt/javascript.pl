@@ -1,10 +1,8 @@
 use strict;
 use warnings;
 
-for my $backend (@::backends) {
-    note $backend->{name};
-
-    my $drv = WebDriver::Tiny->new( %{ $backend->{args} } );
+sub {
+    my $drv = shift;
 
     is $drv->js('return "foo"'), 'foo', q/js('return "foo"')/;
 
@@ -13,7 +11,5 @@ for my $backend (@::backends) {
 
     is $drv->js_phantom('return "baz"'), 'baz',
         q/js_phantomjs('return "baz"')/
-        if $backend->{name} eq 'PhantomJS';
-}
-
-done_testing;
+        if $drv->capabilities->{browserName} eq 'phantomjs';
+};

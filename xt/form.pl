@@ -5,12 +5,9 @@ use warnings;
 use URI;
 use URI::QueryParam;
 
-for my $backend (@::backends) {
-    note $backend->{name};
+sub {
+    my $drv = shift;
 
-    my $drv = WebDriver::Tiny->new( %{ $backend->{args} } );
-
-    $drv->get($::url);
     is_deeply [ map $_->attr('name'), $drv->('input,select') ], [
         'text', "text '", 'text "', 'text \\', 'text ☃',
         ('radio') x 3, 'select', 'multi select',
@@ -51,6 +48,4 @@ for my $backend (@::backends) {
     $elem->clear;
 
     is $elem->attr('value'), '', 'elem->clear';
-}
-
-done_testing;
+};

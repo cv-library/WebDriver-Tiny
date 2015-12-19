@@ -1,28 +1,41 @@
-#!/usr/bin/env perl
-
-use lib 'lib';
 use strict;
 use warnings;
 
-use App::ForkProve;
-use Cwd ();
-use TAP::Harness;
+use HTTP::Server::Simple;
+use HTTP::Server::Simple::CGI;
 use Test::Deep;
 use Test::More;
 use WebDriver::Tiny;
 
-my ( $pid, @pids ) = $$;
+my ( $pid, %pids ) = $$;
 
-END { if ( $pid == $$ ) { kill 15, $_ for @pids } }
+END { if ( $$ == $pid ) { kill 15, $_ for values %pids } }
 
-close STDOUT and exec '~/Downloads/chromedriver' unless $_ = fork;
-push @pids, $_;
+exec qw/chromedriver/ or exit unless $pids{ChromeDriver} = fork;
+exec qw/phantomjs -w/ or exit unless $pids{PhantomJS}    = fork;
 
-close STDOUT and exec qw/phantomjs -w --webdriver-loglevel=ERROR/
-    unless $_ = fork;
-push @pids, $_;
+{
+    no warnings 'redefine';
 
-our @backends = (
+    *HTTP::Server::Simple::print_banner = sub {};
+
+    local ( @ARGV, $/ ) = 'xt/test.html';
+
+    utf8::decode our $html = my $bytes = <>;
+
+    *HTTP::Server::Simple::CGI::handle_request = sub {
+        print "HTTP/1.0 200 OK\nContent-Type:text/html;charset=UTF-8\n",
+            "Content-Length:", length $bytes, "\n\n", $bytes;
+    };
+}
+
+$pids{HTTPServerSimple} = HTTP::Server::Simple->new->background;
+
+sleep 2;    # FIXME Give everyone enough time to start.
+
+my %tests = map { /(\w+)\./ => require } <xt/*.pl>;
+
+for (
     {   args => {
             capabilities => {
                 chromeOptions => { binary => '/usr/bin/google-chrome-unstable' },
@@ -50,11 +63,10 @@ our @backends = (
             version                  => re(qr/^[\d.]+$/),
             webStorageEnabled        => bool(1),
         },
-        maximized  => [ 1920, 1053 ],
         name       => 'ChromeDriver',
         user_agent => qr/Chrome/,
     },
-    {   args       => { port => 8910 },
+    {   args => { port => 8910 },
         capabilities => {
             acceptSslCerts           => bool(0),
             applicationCacheEnabled  => bool(0),
@@ -75,16 +87,29 @@ our @backends = (
             version                  => re(qr/^[\d.]+$/),
             webStorageEnabled        => bool(0),
         },
-        maximized  => [ 1366, 768 ],
         name       => 'PhantomJS',
         user_agent => qr/PhantomJS/,
     },
-);
+) {
+    # FIXME Travis doesn't have ChromeDriver.
+    next if $_->{name} eq 'ChromeDriver'
+         && !grep -x "$_/chromedriver", split /:/, $ENV{PATH};
 
-# FIXME Hack for Travis for now.
-shift @backends unless -e "$ENV{HOME}/Downloads/chromedriver";
+    note $_->{name};
 
-our $url = 'file://' . Cwd::fastcwd . '/xt/test.html';
+    my $drv = WebDriver::Tiny->new( %{ $_->{args} } );
 
-exit TAP::Harness->new( { color => 1, verbosity => 1 } )
-    ->runtests( @ARGV ? @ARGV : <{t,xt}/*.t> )->exit;
+    cmp_deeply $drv->capabilities, $_->{capabilities}, 'capabilities';
+
+    like $drv->user_agent, $_->{user_agent}, 'user_agent';
+
+    $drv->get('http://localhost:8080');
+
+    for ( sort keys %tests ) {
+        note $_;
+
+        $tests{$_}($drv);
+    }
+}
+
+done_testing;
