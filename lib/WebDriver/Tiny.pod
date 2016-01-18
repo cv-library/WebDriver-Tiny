@@ -271,7 +271,7 @@ seconds.
 
 =item tries
 
-Maximum number of attempts to try and find a match.
+Maximum number of attempts to try and find a match. Defaults to 5.
 
 =back
 
