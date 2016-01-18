@@ -73,6 +73,12 @@ targetting, below are some examples:
 
 =head2 PhantomJS
 
+On the command line:
+
+ phantomjs -w
+
+In Perl code:
+
  my $drv = WebDriver::Tiny->new( port => 8910 );
 
 =head2 Selenium
