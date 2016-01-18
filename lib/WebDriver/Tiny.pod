@@ -238,7 +238,7 @@ Accessor to get/set the C<base_url> after instantiation.
  my $elements = $drv->find( '#id', %args );
 
 Return a collection of matched elements found in the DOM based on passed
-argument(s). Always returns a collection of L<WebDriver::Elements> (sometimes
+argument(s). Always returns a collection of L<WebDriver::Tiny::Elements> (sometimes
 containing no elements), in list context it will return an array of
 collections, each containing one element.
 
