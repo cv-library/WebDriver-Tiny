@@ -38,8 +38,6 @@ WebDriver::Tiny - Selenium 2.0 bindings for Perl
 
 =head1 DESCRIPTION
 
-=over
-
 Selenium automates browsers. That's it! What you do with that power is
 entirely up to you. Primarily, it is for automating web applications for
 testing purposes, but is certainly not limited to just that. Boring web-based
@@ -51,8 +49,6 @@ also the core technology in countless other browser automation tools, APIs and
 frameworks.
 
 L<http://www.seleniumhq.org>
-
-=back
 
 B<WARNING>: The API of this module is unstable and may change without warning
 (any change will be appropriately documented in the changelog).
@@ -72,6 +68,12 @@ targetting, below are some examples:
  );
 
 =head2 PhantomJS
+
+On the command line:
+
+ phantomjs -w
+
+In Perl code:
 
  my $drv = WebDriver::Tiny->new( port => 8910 );
 
@@ -238,7 +240,7 @@ Accessor to get/set the C<base_url> after instantiation.
  my $elements = $drv->find( '#id', %args );
 
 Return a collection of matched elements found in the DOM based on passed
-argument(s). Always returns a collection of L<WebDriver::Elements> (sometimes
+argument(s). Always returns a collection of L<WebDriver::Tiny::Elements> (sometimes
 containing no elements), in list context it will return an array of
 collections, each containing one element.
 
@@ -269,7 +271,7 @@ seconds.
 
 =item tries
 
-Maximum number of attempts to try and find a match.
+Maximum number of attempts to try and find a match. Defaults to 5.
 
 =back
 
