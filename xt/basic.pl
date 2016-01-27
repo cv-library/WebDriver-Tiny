@@ -30,11 +30,17 @@ sub {
 
     is $drv->url, 'http://localhost:8080/', 'url';
 
-    $drv->( 'go to bottom', method => 'link_text' )->click;
+    ( my $bottom = $drv->( 'go to bottom', method => 'link_text' ) )->click;
 
     is $drv->url, 'http://localhost:8080/#bottom', 'click';
 
-    $drv->( 'go to top', method => 'link_text' )->click;
+    ( my $top = $drv->( 'go to top', method => 'link_text' ) )->click;
 
     is $drv->url, 'http://localhost:8080/#top', 'click';
+
+    is_deeply $drv->( 'to top', method => 'partial_link_text' ), $top,
+        'partial_link_text matching one';
+
+    is_deeply [ $drv->( ' to ', method => 'partial_link_text' ) ],
+        [ $bottom, $top ], 'partial_link_text matching two';
 }
