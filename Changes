@@ -1,6 +1,7 @@
 0.004 ???
     - Require Perl 5.20 to allow for cleaner code.
     - Require Carp 1.25 to ensure errors have periods on the end.
+    - Add $drv->alert_text.
     - Add $elem->location.
 
 0.003 2015-09-11

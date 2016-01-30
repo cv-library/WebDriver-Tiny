@@ -122,6 +122,10 @@ sub accept_alert {
     $_[0];
 }
 
+sub alert_text {
+    $_[0][3]{handlesAlerts} ? $_[0]->_req( GET => '/alert_text' )->{value} : ();
+}
+
 sub dismiss_alert {
     $_[0]->_req( POST => '/dismiss_alert' ) if $_[0][3]{handlesAlerts};
 

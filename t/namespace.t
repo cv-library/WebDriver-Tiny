@@ -20,6 +20,7 @@ is_deeply [ sort keys %got ], [ qw/
     __ANON__
     _req
     accept_alert
+    alert_text
     back
     base_url
     capabilities
