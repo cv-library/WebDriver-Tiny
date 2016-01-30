@@ -34,6 +34,8 @@ WebDriver::Tiny::Elements
 
 =head3 enabled
 
+=head3 location
+
 =head3 rect
 
 =head3 selected

@@ -1,6 +1,6 @@
 package WebDriver::Tiny 0.004;
 
-use 5.014;
+use 5.020;
 use warnings;
 
 # Allow "cute" $drv->('selector') syntax.

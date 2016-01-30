@@ -1,9 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More $] < 5.014
-    ? ( skip_all => 'Perl 5.14 or higher needed to create custom charnames' )
-    : ( tests    => 114 );
+use Test::More tests => 114;
 
 require charnames;
 require WebDriver::Tiny;

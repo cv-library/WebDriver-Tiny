@@ -1,6 +1,6 @@
 package WebDriver::Tiny::Elements 0.004;
 
-use 5.014;
+use 5.020;
 use warnings;
 
 # Manip
@@ -29,6 +29,8 @@ sub rect     { $_[0]->_req( GET => '/rect'      )->{value} }
 sub selected { $_[0]->_req( GET => '/selected'  )->{value} }
 sub tag      { $_[0]->_req( GET => '/name'      )->{value} }
 sub visible  { $_[0]->_req( GET => '/displayed' )->{value} }
+
+sub location { +{ $_[0]->_req( GET => '/location' )->{value}->%{'x', 'y'} } }
 
 *find       = \&WebDriver::Tiny::find;
 *screenshot = \&WebDriver::Tiny::screenshot;
