@@ -15,8 +15,6 @@ use t scalar(
     /
 ) + 3;
 
-my $drv = WebDriver::Tiny->new( port => 1 );
-
 is $drv->$_('foo'), $drv, "->$_ should return \$self" for @::methods;
 
 is $drv->$_( 1, 1 ), $drv, "->$_ should return \$self"

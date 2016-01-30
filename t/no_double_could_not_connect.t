@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use WebDriver::Tiny;
-use Test::More;
+use Test::More tests => 2;
 
 my $warn;
 
@@ -13,5 +13,3 @@ eval { WebDriver::Tiny->new( port => 1 ) };
 like $@, qr/^Could not connect to 'localhost:1'/, '->new correctly throws';
 
 is $warn, undef, 'No additional warning in cleanup';
-
-done_testing;

@@ -3,26 +3,42 @@ package t;
 use strict;
 use warnings;
 
-my ( $reply, @args ) = { content => '{"sessionId":":sid"}', success => 1 };
+require WebDriver::Tiny;
 
-sub HTTP::Tiny::new { bless {}, 'HTTP::Tiny' }
-
-sub HTTP::Tiny::_request { shift; @args = @_; $reply }
-
-BEGIN { $INC{'HTTP/Tiny.pm'} = 1; require WebDriver::Tiny }
+# So we don't get a request at global destruction.
+undef *WebDriver::Tiny::DESTROY;
 
 sub import {
+    # Turn on strict & warnings for the caller.
     strict->import;
     warnings->import;
 
-    my $pkg = caller;
-
-    eval "package $pkg; use Test::More tests => $_[1]";
-
-    no strict 'refs';
-
-    *{ $pkg . '::args_are' } = sub { Test::More::is_deeply( \@args, @_ ) };
-    *{ $pkg . '::content'  } = \$reply->{content};
+    eval "package main; use Test::More tests => $_[1]";
 }
 
-1;
+my @reqs;
+
+# Give the caller a reqs_are test sub.
+sub main::reqs_are {
+    Test::More::is_deeply( \@reqs, @_ );
+
+    @reqs = ();
+}
+
+# Give the caller a $content so they can override.
+*main::content = \( my $content = '{"value":[]}' );
+
+# Our dummy user agent just logs what the request was and returns success.
+sub ua::_request {
+    shift;
+
+    # Decode JSON, if provided, to make testing easier.
+    $_[2] = JSON::PP::decode_json( $_[2]{content} ) if $_[2];
+
+    push @reqs, \@_;
+
+    { content => $content, success => 1 }
+};
+
+# Give the caller a $drv.
+*main::drv = \bless [ bless( [], 'ua' ), '', '' ], 'WebDriver::Tiny';
