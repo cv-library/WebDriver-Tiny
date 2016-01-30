@@ -99,7 +99,7 @@ sub new {
     $self->[3] = $reply->{value};
 
     # Numify bool objects, saves memory.
-    $_ += 0 for grep ref eq 'JSON::PP::Boolean', values %{ $self->[3] };
+    $_ += 0 for grep ref eq 'JSON::PP::Boolean', values $self->[3]->%*;
 
     $self;
 }
@@ -197,7 +197,7 @@ sub find {
             { using => $method, value => $selector },
         );
 
-        @ids = map $_->{ELEMENT}, @{ $reply->{value} };
+        @ids = map $_->{ELEMENT}, $reply->{value}->@*;
 
         # FIXME This'll break when called on elems->find(), this always need
         # to be $drv NOT $self.

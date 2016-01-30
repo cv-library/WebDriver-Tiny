@@ -6,15 +6,15 @@ use warnings;
 no  warnings 'experimental::postderef';
 
 # Manip
-sub append { bless [ @{ +shift }, map @$_[ 1.. $#$_ ], @_ ] }
-sub first  { bless [ @{ $_[0] }[ 0,  1 ] ] }
-sub last   { bless [ @{ $_[0] }[ 0, -1 ] ] }
+sub append { bless [ shift->@*, map @$_[ 1.. $#$_ ], @_ ] }
+sub first  { bless [ $_[0]->@[ 0,  1 ] ] }
+sub last   { bless [ $_[0]->@[ 0, -1 ] ] }
 sub size   { $#{ $_[0] } }
-sub slice  { my ( $drv, @ids ) = @{ +shift }; bless [ $drv, @ids[@_] ] }
-sub split  { my ( $drv, @ids ) = @{ $_[0] }; map { bless [ $drv, $_ ] } @ids }
+sub slice  { my ( $drv, @ids ) = shift->@*; bless [ $drv, @ids[@_] ] }
+sub split  { my ( $drv, @ids ) = $_[0]->@*; map { bless [ $drv, $_ ] } @ids }
 
 sub uniq {
-    my ( $drv, @ids ) = @{ $_[0] };
+    my ( $drv, @ids ) = $_[0]->@*;
 
     bless [ $drv, keys %{ { map { $_ => undef } @ids } } ];
 }
@@ -108,11 +108,11 @@ sub submit {
         return [ click, keys ];
 JS
 
-    $drv->_req( POST => "/element/$_->{ELEMENT}/click" ) for @{ $elems->[0] };
+    $drv->_req( POST => "/element/$_->{ELEMENT}/click" ) for $elems->[0]->@*;
 
     $drv->_req(
         POST => "/element/$_->[0]{ELEMENT}/value", { value => [ $_->[1] ] },
-    ) for @{ $elems->[1] };
+    ) for $elems->[1]->@*;
 
     $self->_req( POST => '/submit' );
 
@@ -120,7 +120,7 @@ JS
 }
 
 sub text {
-    my ( $drv, @ids ) = @{ $_[0] };
+    my ( $drv, @ids ) = $_[0]->@*;
 
     join ' ', map $drv->_req( GET => "/element/$_/text" )->{value}, @ids;
 }
