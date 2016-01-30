@@ -35,7 +35,7 @@ sub ua::_request {
     # Decode JSON, if provided, to make testing easier.
     $_[2] = JSON::PP::decode_json( $_[2]{content} ) if $_[2];
 
-    push @reqs, \@_;
+    push @reqs, [@_];
 
     { content => $content, success => 1 }
 };
