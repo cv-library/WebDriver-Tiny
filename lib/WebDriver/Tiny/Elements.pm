@@ -32,7 +32,11 @@ sub selected { $_[0]->_req( GET => '/selected'  )->{value} }
 sub tag      { $_[0]->_req( GET => '/name'      )->{value} }
 sub visible  { $_[0]->_req( GET => '/displayed' )->{value} }
 
+# Slice off just 'x' & 'y' as various backends like to supply other junk too.
 sub location { +{ $_[0]->_req( GET => '/location' )->{value}->%{'x', 'y'} } }
+sub location_in_view {
+    +{ $_[0]->_req( GET => '/location_in_view' )->{value}->%{'x', 'y'} };
+}
 
 *find       = \&WebDriver::Tiny::find;
 *screenshot = \&WebDriver::Tiny::screenshot;

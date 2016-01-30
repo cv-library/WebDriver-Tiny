@@ -70,6 +70,7 @@ is_deeply [ sort keys %got ], [ qw/
     import
     last
     location
+    location_in_view
     move_to
     rect
     screenshot

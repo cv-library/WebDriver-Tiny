@@ -36,6 +36,18 @@ WebDriver::Tiny::Elements
 
 =head3 location
 
+Get an element's location on the page.
+
+Accepts no arguments.
+Returns a hashref containing C<x> and C<y>.
+
+=head3 location_in_view
+
+Get an element's location on the screen once it has been scrolled into view.
+
+Accepts no arguments.
+Returns a hashref containing C<x> and C<y>.
+
 =head3 rect
 
 =head3 selected
