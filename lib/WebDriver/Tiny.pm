@@ -63,6 +63,15 @@ sub import {
     charnames->import( ':alias' => $chars );
 }
 
+# We're a blessed arrayref (for speed) of the following parts:
+#
+# $self = [
+#   0: HTTP::Tiny instance,
+#   1: URL of the WebDriver daemon,
+#   2: Base URL which schemeless get calls are based off,
+#   3: The capabilities of the WebDriver daemon,
+#   4: Cached closure of $self for ->() syntax,
+# ]
 sub new {
     my ( $class, %args ) = @_;
 
