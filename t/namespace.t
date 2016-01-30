@@ -68,6 +68,7 @@ is_deeply [ sort keys %got ], [ qw/
     first
     import
     last
+    location
     move_to
     rect
     screenshot

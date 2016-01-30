@@ -1,7 +1,9 @@
 package WebDriver::Tiny::Elements 0.004;
 
 use 5.020;
+use feature 'postderef';
 use warnings;
+no  warnings 'experimental::postderef';
 
 # Manip
 sub append { bless [ @{ +shift }, map @$_[ 1.. $#$_ ], @_ ] }

@@ -1,7 +1,9 @@
 package WebDriver::Tiny 0.004;
 
 use 5.020;
+use feature 'postderef';
 use warnings;
+no  warnings 'experimental::postderef';
 
 # Allow "cute" $drv->('selector') syntax.
 #
