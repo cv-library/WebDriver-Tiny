@@ -116,6 +116,34 @@ sub close_page { $_[0]->_req( DELETE => '/window'  ); $_[0] }
 sub forward    { $_[0]->_req( POST   => '/forward' ); $_[0] }
 sub refresh    { $_[0]->_req( POST   => '/refresh' ); $_[0] }
 
+sub storage {
+    my ( $self, $key, $value ) = @_;
+
+    # Set a key.
+    if ( @_ == 3 ) {
+        my $ret = $self->_req(
+            POST => '/local_storage', { key => $key, value => $value } );
+
+        Carp::croak $ret->{value}{message} if $ret->{value}{message};
+
+        $self;
+    }
+    # Get a key.
+    elsif ( @_ == 2 ) {
+        $self->_req( GET => "/local_storage/key/$key" )->{value};
+    }
+    # List all keys.
+    else {
+        my @keys = $self->_req( GET => '/local_storage' )->{value}->@*;
+
+        return @keys if wantarray;
+
+        +{ map {
+            $_ => $self->_req( GET => "/local_storage/key/$_" )->{value}
+        } @keys };
+    }
+}
+
 sub accept_alert {
     $_[0]->_req( POST => '/accept_alert' ) if $_[0][3]{handlesAlerts};
 

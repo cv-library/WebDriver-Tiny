@@ -2,6 +2,7 @@
     - Require Perl 5.20 to allow for cleaner code.
     - Require Carp 1.25 to ensure errors have periods on the end.
     - Add $drv->alert_text.
+    - Add $drv->storage.
     - Add $elem->location.
     - Add $elem->location_in_view.
 

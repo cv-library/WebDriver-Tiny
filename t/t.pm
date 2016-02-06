@@ -26,7 +26,7 @@ sub main::reqs_are {
 }
 
 # Give the caller a $content so they can override.
-*main::content = \( my $content = '{"value":[]}' );
+*main::content = \( my $content = '{}' );
 
 # Our dummy user agent just logs what the request was and returns success.
 sub ua::_request {

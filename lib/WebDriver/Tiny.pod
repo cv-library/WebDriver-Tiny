@@ -342,6 +342,24 @@ Maximum number of attempts to try and find a match. Defaults to 5.
 
  my $return = $drv->js_phantomjs('return "baz"');
 
+=head2 Local Storage
+
+=head3 storage
+
+ # Get a hashref of all keys and values in local storage.
+ my $storage = $drv->storage;
+
+ # Get a list of all the keys in local storage.
+ my @keys = $drv->storage;
+
+ # Get the value of the "foo" key in local storage.
+ my $value = $drv->storage('foo');
+
+ # Set the value of the "foo" key in local storage to "bar".
+ $drv->storage( foo => 'bar' );
+
+=head3 storage_delete
+
 =head2 Navigation
 
 =head3 back

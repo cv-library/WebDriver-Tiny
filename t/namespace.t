@@ -41,6 +41,7 @@ is_deeply [ sort keys %got ], [ qw/
     refresh
     screenshot
     source
+    storage
     switch_page
     title
     url
