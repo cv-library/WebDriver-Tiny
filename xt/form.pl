@@ -8,7 +8,7 @@ use URI::QueryParam;
 sub {
     my $drv = shift;
 
-    is_deeply [ map $_->attr('name'), $drv->('input,select') ], [
+    is_deeply [ map $_->attr('name'), $drv->('form')->find('input,select') ], [
         'text', "text '", 'text "', 'text \\', 'text ☃',
         ('radio') x 3, 'select', 'multi select',
     ], 'names of all form fields are correct';
@@ -48,4 +48,7 @@ sub {
     $elem->clear;
 
     is $elem->attr('value'), '', 'elem->clear';
+
+    ok $drv->('#enabled')->enabled, 'enabled';
+    ok !$drv->('#disabled')->enabled, 'not enabled';
 };

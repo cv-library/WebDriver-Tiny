@@ -40,5 +40,9 @@ sub ua::_request {
     { content => $content, success => 1 }
 };
 
-# Give the caller a $drv.
-*main::drv = \bless [ bless( [], 'ua' ), '', '' ], 'WebDriver::Tiny';
+my $drv = bless [ bless( [], 'ua' ), '', '' ], 'WebDriver::Tiny';
+
+# Give the caller a $drv and a $elem.
+*main::drv = \$drv;
+
+*main::elem = \bless [ $drv, 123 ], 'WebDriver::Tiny::Elements';
