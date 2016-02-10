@@ -3,11 +3,11 @@ use warnings;
 
 use WebDriver::Tiny::Elements;
 use Test::Deep;
-use Test::More tests => 12;
+use Test::More tests => 15;
 
 sub make { bless [ 'd', @_ ], 'WebDriver::Tiny::Elements' }
 
-my $e = make( 1..9 );
+my $e = make( 1 .. 9 );
 
 is_deeply $e->first, [ 'd', 1 ], '->first';
 
@@ -28,9 +28,22 @@ is_deeply $e->slice(9), [ 'd', undef ], '->slice(9)';
 is_deeply $e->slice( -1, 0, 1, 3, 7, 12 ), [ 'd', 9, 1, 2, 4, 8, undef ],
     '->slice( -1, 0, 1, 3, 7, 12 )';
 
-is_deeply $e->append( make( 10, 11 ), make( 12 ) ), [ 'd', 1..12 ],
+my $no_e = make();
+is_deeply [ $no_e->split ], [], '->split [no elements]';
+
+my $one_e = make(1);
+is_deeply [ $one_e->split ], [ [ 'd', 1 ] ], '->split [one element]';
+
+is_deeply [ $e->split ],
+    [
+    [ 'd', 1 ], [ 'd', 2 ], [ 'd', 3 ], [ 'd', 4 ], [ 'd', 5 ], [ 'd', 6 ],
+    [ 'd', 7 ], [ 'd', 8 ], [ 'd', 9 ],
+    ],
+    '->split [multiple elements]';
+
+is_deeply $e->append( make( 10, 11 ), make(12) ), [ 'd', 1 .. 12 ],
     '->append';
 
-cmp_bag [ @{ $e->append( make( 6, 9 ) )->uniq } ], [ 'd', 1..9 ], '->uniq';
+cmp_bag [ @{ $e->append( make( 6, 9 ) )->uniq } ], [ 'd', 1 .. 9 ], '->uniq';
 
-is_deeply $e, [ 'd', 1..9 ], 'Original is unaffected';
+is_deeply $e, [ 'd', 1 .. 9 ], 'Original is unaffected';
