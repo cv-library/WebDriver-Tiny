@@ -394,6 +394,10 @@ Hash of the capabilities of the current session.
 
 Get the source code of the current page.
 
+=head3 status
+
+ my $status = $drv->status;
+
 =head3 title
 
  my $title = $drv->title;

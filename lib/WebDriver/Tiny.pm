@@ -116,6 +116,13 @@ sub close_page { $_[0]->_req( DELETE => '/window'  ); $_[0] }
 sub forward    { $_[0]->_req( POST   => '/forward' ); $_[0] }
 sub refresh    { $_[0]->_req( POST   => '/refresh' ); $_[0] }
 
+sub status {
+    # /status is the only path without the session prefix, so surpress it.
+    local $_[0][1] = substr $_[0][1], 0, rindex $_[0][1], '/session/';
+
+    $_[0]->_req( GET => '/status' )->{value};
+}
+
 sub storage {
     my ( $self, $key, $value ) = @_;
 
