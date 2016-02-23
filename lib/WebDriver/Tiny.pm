@@ -7,17 +7,11 @@ no  warnings 'experimental::postderef';
 
 # Allow "cute" $drv->('selector') syntax.
 #
-# Caching the closure is around twice as fast, weaken to avoid $self
-# circularly referencing $self.
-use overload
-    fallback => 1,
-    '&{}'    => sub {
-        $_[0][4] ||= do {
-            Scalar::Util::weaken( my $self = $_[0] );
-
-            sub { $self->find(@_) };
-        };
-    };
+# $self->[4] contains a sub ref that closes over a weakened $self that calls
+# find, i.e. sub { $weak_self->find(@_) }. This sub ref is returned when $self
+# is invoked as a sub ref thanks to the magic of overloading. We weaken to
+# avoid a memory leak. The closure is built in new().
+use overload fallback => 1, '&{}' => sub { $_[0][4] };
 
 use Carp 1.25 ();
 use HTTP::Tiny;
@@ -100,6 +94,10 @@ sub new {
 
     # Numify bool objects, saves memory.
     $_ += 0 for grep ref eq 'JSON::PP::Boolean', values $self->[3]->%*;
+
+    # See the overloading at the top of the file for details.
+    my $weak_self = Scalar::Util::weaken($self);
+    $self->[4] = sub { $weak_self->find(@_) };
 
     $self;
 }

@@ -42,6 +42,8 @@ sub ua::_request {
 
 my $drv = bless [ bless( [], 'ua' ), '', '' ], 'WebDriver::Tiny';
 
+$drv->[4] = sub { $drv->find(@_) };
+
 # Give the caller a $drv and a $elem.
 *main::drv = \$drv;
 
