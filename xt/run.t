@@ -11,8 +11,14 @@ my ( $pid, %pids ) = $$;
 
 END { if ( $$ == $pid ) { kill 15, $_ for values %pids } }
 
-exec qw/chromedriver/ or exit unless $pids{ChromeDriver} = fork;
-exec qw/phantomjs -w/ or exit unless $pids{PhantomJS}    = fork;
+# FIXME Travis doesn't have ChromeDriver.
+my $has_chromedriver = grep -x "$_/chromedriver", split /:/, $ENV{PATH};
+
+if ($has_chromedriver) {
+    exec qw/chromedriver/ or exit unless $pids{ChromeDriver} = fork;
+}
+
+exec qw/phantomjs -w/ or exit unless $pids{PhantomJS} = fork;
 
 {
     no warnings 'redefine';
@@ -91,9 +97,7 @@ for (
         user_agent => qr/PhantomJS/,
     },
 ) {
-    # FIXME Travis doesn't have ChromeDriver.
-    next if $_->{name} eq 'ChromeDriver'
-         && !grep -x "$_/chromedriver", split /:/, $ENV{PATH};
+    next if !$has_chromedriver && $_->{name} eq 'ChromeDriver';
 
     note $_->{name};
 
