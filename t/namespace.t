@@ -4,13 +4,9 @@ use warnings;
 use Test::More tests => 2;
 use WebDriver::Tiny;
 
-my %got = %WebDriver::Tiny::;
-
-# Delete stuff that varies by perl version.
-delete @got{ qw/(( OVERLOAD/ };
-
-is_deeply [ sort keys %got ], [ qw/
+is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     (&{}
+    ((
     ()
     BEGIN
     CARP_NOT
@@ -52,12 +48,7 @@ is_deeply [ sort keys %got ], [ qw/
     window_size
 / ], "WebDriver::Tiny has the correct stuff in it's namespace";
 
-%got = %WebDriver::Tiny::Elements::;
-
-# Delete stuff that varies by perl version.
-delete @got{ qw/CARP_NOT ISA/ };
-
-is_deeply [ sort keys %got ], [ qw/
+is_deeply [ sort keys %WebDriver::Tiny::Elements:: ], [ qw/
     BEGIN
     VERSION
     _req
