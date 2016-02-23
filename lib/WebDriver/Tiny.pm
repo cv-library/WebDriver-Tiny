@@ -96,7 +96,7 @@ sub new {
     $_ += 0 for grep ref eq 'JSON::PP::Boolean', values $self->[3]->%*;
 
     # See the overloading at the top of the file for details.
-    my $weak_self = Scalar::Util::weaken($self);
+    Scalar::Util::weaken( my $weak_self = $self );
     $self->[4] = sub { $weak_self->find(@_) };
 
     $self;
