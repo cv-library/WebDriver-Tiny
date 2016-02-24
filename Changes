@@ -1,4 +1,4 @@
-0.004 ???
+0.004 2016-02-24
     - Require Perl 5.20 to allow for cleaner code.
     - Require Carp 1.25 to ensure errors have periods on the end.
     - Add $drv->alert_text.
