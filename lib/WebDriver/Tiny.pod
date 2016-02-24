@@ -12,7 +12,7 @@ WebDriver::Tiny - Selenium 2.0 bindings for Perl
     <img src=https://coveralls.io/repos/cv-library/WebDriver-Tiny/badge.svg>
 </a>
 <a href=https://metacpan.org/pod/WebDriver::Tiny>
-    <img src=https://img.shields.io/cpan/v/WebDriver-Tiny.svg>
+    <img src=https://badge.fury.io/pl/WebDriver-Tiny.svg>
 </a>
 <a href=https://github.com/cv-library/WebDriver-Tiny/issues>
     <img src=https://img.shields.io/github/issues/cv-library/WebDriver-Tiny.svg>
