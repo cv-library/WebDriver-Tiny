@@ -1,4 +1,4 @@
-package WebDriver::Tiny::Elements 0.004;
+package WebDriver::Tiny::Elements 0.005;
 
 use 5.020;
 use feature 'postderef';
