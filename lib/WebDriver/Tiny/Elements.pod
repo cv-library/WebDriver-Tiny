@@ -111,3 +111,7 @@ preserved.
 =head3 find
 
 =head3 screenshot
+
+=head1 SEE ALSO
+
+L<WebDriver::Tiny>
