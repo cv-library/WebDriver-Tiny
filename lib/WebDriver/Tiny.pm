@@ -351,8 +351,7 @@ sub window_size {
 sub _req {
     my ( $self, $method, $path, $args ) = @_;
 
-    # For speed, go straight to HTTP::Tiny's private _request method.
-    my $reply = $self->[0]->_request(
+    my $reply = $self->[0]->request(
         $method,
         $self->[1] . $path,
         $args ? { content => JSON::PP::encode_json $args } : (),
