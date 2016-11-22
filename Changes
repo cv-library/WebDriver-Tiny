@@ -1,4 +1,6 @@
-0.005 ???
+0.005 2016-11-22
+    - Doc fixes. Thanks tomhukins.
+    - Avoid timeouts by using HTTP::Tiny's public API.
 
 0.004 2016-02-24
     - Require Perl 5.20 to allow for cleaner code.
