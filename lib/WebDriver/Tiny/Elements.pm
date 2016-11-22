@@ -48,9 +48,9 @@ sub move_to {
 }
 
 sub send_keys {
-    my ( $self, @keys ) = @_;
+    my ( $self, $keys ) = @_;
 
-    $self->_req( POST => '/value', { value => \@keys } );
+    $self->_req( POST => '/value', { value => [ split //, $keys ] } );
 
     $self;
 }
