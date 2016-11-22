@@ -29,7 +29,7 @@ sub main::reqs_are {
 *main::content = \( my $content = '{}' );
 
 # Our dummy user agent just logs what the request was and returns success.
-sub ua::_request {
+sub ua::request {
     shift;
 
     # Decode JSON, if provided, to make testing easier.
