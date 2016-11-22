@@ -414,29 +414,25 @@ Get the URL of the current page.
 
 =head2 Window Management
 
-=head3 close_page
-
- $drv->close_page;
-
-Close the current page.
-
-=head3 move_to
-
- $drv->move_to( $x, $y );
-
-=head3 page_ids
-
- my $ids = $drv->page_ids;
-
 =head3 screenshot
 
  my $png_blob = $drv->screenshot;
 
  $drv->screenshot('/tmp/foo.png');
 
-=head3 switch_page
+=head3 window
 
- $drv->switch_page($page_id);
+ my $handle = $drv->window;
+
+=head3 windows
+
+ my $handles = $drv->windows;
+
+=head3 window_close
+
+ $drv->window_close;
+
+Close the current window.
 
 =head3 window_maximize
 
@@ -471,6 +467,10 @@ The following set the window's size, returning C<$self> to allow chaining.
  $drv->window_size( $w, $h );                        # Set size of current window.
  $drv->window_size( current => $w, $h );             # Same as above.
  $drv->window_size( foo     => $w, $h );             # Set size of window "foo".
+
+=head3 window_switch
+
+ $drv->window_switch($handle);
 
 =head1 SEE ALSO
 

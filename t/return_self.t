@@ -4,14 +4,14 @@ use t scalar(
         accept_alert
         back
         base_url
-        close_page
         cookie_delete
         dismiss_alert
         forward
         get
         refresh
-        switch_page
+        window_close
         window_maximize
+        window_switch
     /
 ) + 4;
 

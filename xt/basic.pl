@@ -5,7 +5,9 @@ use warnings;
 sub {
     my $drv = shift;
 
-    cmp_deeply $drv->page_ids, [ re qr/^[-\w]+$/ ], 'page_ids';
+    # like $drv->window, qr/^[-\w]+$/, 'window';
+
+    cmp_deeply $drv->windows, [ re qr/^[-\w]+$/ ], 'windows';
 
     my $got = $drv->source;
 

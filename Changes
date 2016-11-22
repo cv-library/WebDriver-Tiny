@@ -1,3 +1,6 @@
+0.006 ???
+    - Reorganise window methods.
+
 0.005 2016-11-22
     - Doc fixes. Thanks tomhukins.
     - Avoid timeouts by using HTTP::Tiny's public API.

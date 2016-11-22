@@ -104,13 +104,11 @@ sub new {
 
 sub capabilities { $_[0][3] }
 
-sub page_ids { $_[0]->_req( GET => '/window_handles' )->{value} }
-sub source   { $_[0]->_req( GET => '/source'         )->{value} }
-sub title    { $_[0]->_req( GET => '/title'          )->{value} }
-sub url      { $_[0]->_req( GET => '/url'            )->{value} }
+sub source { $_[0]->_req( GET => '/source' )->{value} }
+sub title  { $_[0]->_req( GET => '/title'  )->{value} }
+sub url    { $_[0]->_req( GET => '/url'    )->{value} }
 
 sub back       { $_[0]->_req( POST   => '/back'    ); $_[0] }
-sub close_page { $_[0]->_req( DELETE => '/window'  ); $_[0] }
 sub forward    { $_[0]->_req( POST   => '/forward' ); $_[0] }
 sub refresh    { $_[0]->_req( POST   => '/refresh' ); $_[0] }
 
@@ -304,15 +302,12 @@ sub screenshot {
     $data;
 }
 
-sub switch_page {
-    my ( $self, $id ) = @_;
-
-    $self->_req( POST => '/window', { name => $id } );
-
-    $self;
-}
-
 sub user_agent { $js->( '/execute', $_[0], 'return window.navigator.userAgent') }
+
+sub window  { $_[0]->_req( GET => '/window'         )->{value} }
+sub windows { $_[0]->_req( GET => '/window_handles' )->{value} }
+
+sub window_close { $_[0]->_req( DELETE => '/window'  ); $_[0] }
 
 sub window_maximize {
     $_[0]->_req( POST => '/window/' . ( $_[1] // 'current' ) . '/maximize' );
@@ -344,6 +339,14 @@ sub window_size {
     my ( $handle, $w, $h) = @_ == 2 ? ( 'current', @_ ) : @_;
 
     $self->_req( POST => "/window/$handle/size", { width => $w, height => $h } );
+
+    $self;
+}
+
+sub window_switch {
+    my ( $self, $handle ) = @_;
+
+    $self->_req( POST => '/window', { name => $handle } );
 
     $self;
 }

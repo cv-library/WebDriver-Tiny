@@ -20,7 +20,6 @@ is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     back
     base_url
     capabilities
-    close_page
     cookie
     cookie_delete
     cookies
@@ -33,19 +32,21 @@ is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     js_async
     js_phantom
     new
-    page_ids
     refresh
     screenshot
     source
     status
     storage
-    switch_page
     title
     url
     user_agent
+    window
+    window_close
     window_maximize
     window_position
     window_size
+    window_switch
+    windows
 / ], "WebDriver::Tiny has the correct stuff in it's namespace";
 
 is_deeply [ sort keys %WebDriver::Tiny::Elements:: ], [ qw/
