@@ -434,6 +434,10 @@ Get the URL of the current page.
 
 Close the current window.
 
+=head3 window_fullscreen
+
+ $drv->window_fullscreen;
+
 =head3 window_maximize
 
  $drv->window_maximize;              # Maximize current window.

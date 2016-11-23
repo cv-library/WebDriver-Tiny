@@ -42,6 +42,7 @@ is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     user_agent
     window
     window_close
+    window_fullscreen
     window_maximize
     window_position
     window_size

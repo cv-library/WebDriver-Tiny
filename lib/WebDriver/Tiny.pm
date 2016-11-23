@@ -307,7 +307,8 @@ sub user_agent { $js->( '/execute', $_[0], 'return window.navigator.userAgent') 
 sub window  { $_[0]->_req( GET => '/window'         )->{value} }
 sub windows { $_[0]->_req( GET => '/window_handles' )->{value} }
 
-sub window_close { $_[0]->_req( DELETE => '/window'  ); $_[0] }
+sub window_close      { $_[0]->_req( DELETE => '/window'            ); $_[0] }
+sub window_fullscreen { $_[0]->_req( POST   => '/window/fullscreen' ); $_[0] }
 
 sub window_maximize {
     $_[0]->_req( POST => '/window/' . ( $_[1] // 'current' ) . '/maximize' );
