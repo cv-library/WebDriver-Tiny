@@ -5,9 +5,6 @@ use warnings;
 
 require WebDriver::Tiny;
 
-# So we don't get a request at global destruction.
-undef *WebDriver::Tiny::DESTROY;
-
 sub import {
     # Turn on strict & warnings for the caller.
     strict->import;

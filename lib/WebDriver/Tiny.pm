@@ -224,20 +224,30 @@ sub find {
     my $must_be_visible
         = $method eq 'css selector' && $selector =~ s/:visible$//;
 
+    # FIXME
+    my $drv = ref $self eq 'WebDriver::Tiny::Elements' ? $self->[0] : $self;
+
     my @ids;
 
     for ( 0 .. ( $args{tries} // 5 ) ) {
         my $reply = $self->_req(
             POST => '/elements',
-            { using => $method, value => $selector },
+            { using => $method, value => "$selector" },
         );
 
-        @ids = map $_->{ELEMENT}, $reply->{value}->@*;
+        my $type = ref $reply->{value};
+        if ($type eq 'ARRAY') {
+            @ids = map $_->{ELEMENT}, $reply->{value}->@*;
+        }
+        elsif ($type eq 'HASH') {
+            Carp::croak ref $self, qq/->find failed: $reply->{value}{message}/;
+        }
+        else {
+            Carp::croak ref $self, qq/->find failed: $reply->{value}/;
+        }
 
-        # FIXME This'll break when called on elems->find(), this always need
-        # to be $drv NOT $self.
         @ids = grep {
-            $self->_req( GET => "/element/$_/displayed" )->{value}
+            $drv->_req( GET => "/element/$_/displayed" )->{value}
         } @ids if $must_be_visible;
 
         last if @ids;
@@ -248,11 +258,8 @@ sub find {
     Carp::croak ref $self, qq/->find failed for $method = "$_[1]"/
         if !@ids && !exists $args{dies} && !$args{dies};
 
-    # FIXME
-    $self = $self->[0] if ref $self eq 'WebDriver::Tiny::Elements';
-
-    wantarray ? map { bless [ $self, $_ ], 'WebDriver::Tiny::Elements' } @ids
-              : bless [ $self, @ids ], 'WebDriver::Tiny::Elements';
+    wantarray ? map { bless [ $drv, $_ ], 'WebDriver::Tiny::Elements' } @ids
+              : bless [ $drv, @ids ], 'WebDriver::Tiny::Elements';
 }
 
 my $js = sub {
@@ -377,6 +384,6 @@ sub _req {
     JSON::PP::decode_json $reply->{content};
 }
 
-sub DESTROY { $_[0]->_req( DELETE => '' ) if $_[0][3] }
+sub DESTROY { $_[0]->_req( DELETE => '' ) if $_[0][3] && $_[0][0] }
 
 1;
