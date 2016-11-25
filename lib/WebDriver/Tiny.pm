@@ -229,7 +229,7 @@ sub find {
     for ( 0 .. ( $args{tries} // 5 ) ) {
         my $reply = $self->_req(
             POST => '/elements',
-            { using => $method, value => $selector },
+            { using => $method, value => "$selector" },
         );
 
         @ids = map $_->{ELEMENT}, $reply->{value}->@*;
