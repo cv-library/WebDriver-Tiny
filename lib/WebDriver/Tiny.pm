@@ -235,7 +235,16 @@ sub find {
             { using => $method, value => "$selector" },
         );
 
-        @ids = map $_->{ELEMENT}, $reply->{value}->@*;
+        my $type = ref $reply->{value};
+        if ($type eq 'ARRAY') {
+            @ids = map $_->{ELEMENT}, $reply->{value}->@*;
+        }
+        elsif ($type eq 'HASH') {
+            Carp::croak ref $self, qq/->find failed: $reply->{value}{message}/;
+        }
+        else {
+            Carp::croak ref $self, qq/->find failed: $reply->{value}/;
+        }
 
         @ids = grep {
             $drv->_req( GET => "/element/$_/displayed" )->{value}
