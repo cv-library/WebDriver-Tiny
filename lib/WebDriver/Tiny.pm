@@ -365,7 +365,7 @@ sub _req {
     my $reply = $self->[0]->request(
         $method,
         $self->[1] . $path,
-        $args ? { content => JSON::PP::encode_json $args } : (),
+        { content => JSON::PP::encode_json( $args // {} ) },
     );
 
     unless ( $reply->{success} ) {
@@ -375,7 +375,7 @@ sub _req {
             utf8::encode my $msg
                 = JSON::PP::decode_json($reply->{content})->{value}{message};
 
-            JSON::PP::decode_json($msg)->{errorMessage}
+            JSON::PP::decode_json($msg)->{errorMessage};
         };
 
         Carp::croak ref $self, ' - ', $error // $reply->{content};

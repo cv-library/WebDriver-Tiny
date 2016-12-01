@@ -27,14 +27,15 @@ sub main::reqs_are {
 
 # Our dummy user agent just logs what the request was and returns success.
 sub ua::request {
-    shift;
+    my @args = @_[1,2];
 
-    # Decode JSON, if provided, to make testing easier.
-    $_[2] = JSON::PP::decode_json( $_[2]{content} ) if $_[2];
+    # Decode JSON to make testing easier. Skip empty payloads ('{}' or '[]').
+    $args[2] = JSON::PP::decode_json( $_[3]{content} )
+        if length $_[3]{content} > 2;
 
-    push @reqs, [@_];
+    push @reqs, \@args;
 
-    { content => $content, success => 1 }
+    { content => $content, success => 1 };
 };
 
 my $drv = bless [ bless( [], 'ua' ), '', '' ], 'WebDriver::Tiny';
