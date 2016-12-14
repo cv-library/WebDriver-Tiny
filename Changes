@@ -1,6 +1,7 @@
-0.006 ???
+0.006 2016-12-14
     - Reorganise window methods.
     - Always send a JSON payload, to appease geckodriver.
+    - Assorted fixes. Thanks arc.
 
 0.005 2016-11-22
     - Doc fixes. Thanks tomhukins.
