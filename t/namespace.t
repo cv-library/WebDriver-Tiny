@@ -27,6 +27,7 @@ is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     find
     forward
     get
+    html
     import
     js
     js_async
@@ -34,7 +35,6 @@ is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     new
     refresh
     screenshot
-    source
     status
     storage
     title
@@ -62,6 +62,7 @@ is_deeply [ sort keys %WebDriver::Tiny::Elements:: ], [ qw/
     enabled
     find
     first
+    html
     import
     last
     location

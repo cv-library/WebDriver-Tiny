@@ -9,7 +9,7 @@ sub {
 
     cmp_deeply $drv->windows, [ re qr/^[-\w]+$/ ], 'windows';
 
-    my $got = $drv->source;
+    my $got = $drv->html;
 
     # Try to normalise the HTML.
     $got =~ s/\s//g;
@@ -17,6 +17,8 @@ sub {
     $got =~ s|xmlns="http://www.w3.org/1999/xhtml"||;
 
     is $got, $::html =~ s/\s//gr, 'source';
+
+    is $drv->('title')->html, '<title>Frosty the ☃</title>', 'html of <title>';
 
     is $drv->('h1')->text, 'ᴛ̲ʜ̲ᴇ̲ʀ̲ᴇ̲ ̲ɪ̲s̲ ̲ɴ̲ᴏ̲ ̲U̲ɴ̲ɪ̲ᴄ̲ᴏ̲ᴅ̲ᴇ̲ ̲ᴍ̲ᴀ̲ɢ̲ɪ̲ᴄ̲ ̲ʙ̲ᴜ̲ʟ̲ʟ̲ᴇ̲ᴛ̲', 'text';
 

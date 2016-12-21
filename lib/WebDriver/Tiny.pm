@@ -104,9 +104,9 @@ sub new {
 
 sub capabilities { $_[0][3] }
 
-sub source { $_[0]->_req( GET => '/source' )->{value} }
-sub title  { $_[0]->_req( GET => '/title'  )->{value} }
-sub url    { $_[0]->_req( GET => '/url'    )->{value} }
+sub html  { $_[0]->_req( GET => '/source' )->{value} }
+sub title { $_[0]->_req( GET => '/title'  )->{value} }
+sub url   { $_[0]->_req( GET => '/url'    )->{value} }
 
 sub back       { $_[0]->_req( POST   => '/back'    ); $_[0] }
 sub forward    { $_[0]->_req( POST   => '/forward' ); $_[0] }

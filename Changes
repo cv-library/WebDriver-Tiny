@@ -1,3 +1,6 @@
+0.007 ???
+    - Rename $drv->source to $drv->html, add $elem->html.
+
 0.006 2016-12-14
     - Reorganise window methods.
     - Always send a JSON payload, to appease geckodriver.

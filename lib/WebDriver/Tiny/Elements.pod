@@ -34,6 +34,13 @@ WebDriver::Tiny::Elements
 
 =head3 enabled
 
+=head2 html
+
+ say $elem->html;
+
+Get a serialized HTML fragment describing the element including its
+descendants.
+
 =head3 location
 
 Get an element's location on the page.

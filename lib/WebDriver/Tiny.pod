@@ -384,15 +384,15 @@ Maximum number of attempts to try and find a match. Defaults to 5.
 
 Hash of the capabilities of the current session.
 
+=head3 html
+
+Get the source code of the current page.
+
 =head3 orientation
 
  my $orientation = $drv->orientation;
 
  $drv->orientation($orientation);
-
-=head3 source
-
-Get the source code of the current page.
 
 =head3 status
 
