@@ -49,7 +49,7 @@ sub move_to {
 }
 
 sub screenshot {
-	my ($self, $file) = @_;
+    my ($self, $file) = @_;
 
     require MIME::Base64;
 
