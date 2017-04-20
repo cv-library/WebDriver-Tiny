@@ -17,4 +17,19 @@ sub {
     local ( @ARGV, $/ ) = $file->filename;
 
     is <>, $png, 'screenshot("file") matches screenshot';
+
+    my $elem = $drv->('form');
+
+    $png = $elem->screenshot;
+
+    is substr( $png, 0, 8 ), "\211PNG\r\n\032\n",
+        'screenshot of element looks like a PNG';
+
+    $file = File::Temp->new;
+
+    $elem->screenshot( $file->filename );
+
+    local ( @ARGV, $/ ) = $file->filename;
+
+    is <>, $png, 'element screenshot("file") matches screenshot';
 };

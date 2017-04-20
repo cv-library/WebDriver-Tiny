@@ -288,7 +288,6 @@ sub get {
     $self;
 }
 
-# TODO make this handle elements too? Or make a new method?
 sub screenshot {
     my ( $self, $file ) = @_;
 

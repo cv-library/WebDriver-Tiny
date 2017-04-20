@@ -40,13 +40,32 @@ sub location_in_view {
     +{ $_[0]->_req( GET => '/location_in_view' )->{value}->%{'x', 'y'} };
 }
 
-*find       = \&WebDriver::Tiny::find;
-*screenshot = \&WebDriver::Tiny::screenshot;
+*find = \&WebDriver::Tiny::find;
 
 sub move_to {
     $_[0][0]->_req( POST => '/moveto', { element => $_[0][1] } );
 
     $_[0];
+}
+
+sub screenshot {
+	my ($self, $file) = @_;
+
+    require MIME::Base64;
+
+    my $data = MIME::Base64::decode_base64(
+        $self->_req( GET => '/screenshot' )->{value}
+    );
+
+    if ( @_ == 2 ) {
+        open my $fh, '>', $file or die $!;
+        print $fh $data;
+        close $fh or die $!;
+
+        return $self;
+    }
+
+    $data;
 }
 
 sub send_keys {

@@ -118,6 +118,9 @@ preserved.
 =head3 find
 
 =head3 screenshot
+ my $png_blob = $elem->screenshot;
+
+ $elem->screenshot('/tmp/foo.png');
 
 =head1 SEE ALSO
 
