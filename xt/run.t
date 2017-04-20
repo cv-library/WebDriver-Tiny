@@ -39,7 +39,7 @@ $pids{HTTPServerSimple} = HTTP::Server::Simple->new->background;
 
 sleep 2;    # FIXME Give everyone enough time to start.
 
-my %tests = map { /(\w+)\./ => require } <xt/*.pl>;
+my %tests = map { /(\w+)\./ => require "./$_" } <xt/*.pl>;
 
 for (
     {   args => {
