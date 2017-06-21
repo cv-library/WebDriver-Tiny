@@ -8,7 +8,7 @@ reqs_are [ [ GET => '/source' ] ], '$drv->html';
 $elem->html;
 
 reqs_are [ [
-    POST => '/execute',
+    POST => '/execute/sync',
     {   args   => [ { ELEMENT => 123 } ],
         script => 'return arguments[0].outerHTML',
     },

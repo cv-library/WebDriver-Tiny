@@ -1,9 +1,14 @@
 language: perl
-sudo:     false
+services:
+    - docker
+sudo: required
 perl:
+    - '5.26'
     - '5.24'
     - '5.22'
     - '5.20'
-install:       cpanm -n --skip-satisfied Devel::Cover::Report::Coveralls HTTP::Server::Simple
-script:        PERL5OPT=-MDevel::Cover prove -lv t xt
+install: cpanm -n --skip-satisfied Devel::Cover::Report::Coveralls
+script:
+    - PERL5OPT=-MDevel::Cover prove -lv t
+    - ./run-xt
 after_success: cover -report coveralls -select_re ^lib/

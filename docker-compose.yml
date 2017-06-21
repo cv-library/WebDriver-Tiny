@@ -1,0 +1,36 @@
+version: '2'
+volumes:
+    xauth:
+    x11-unix:
+services:
+    geckodriver:
+        depends_on:
+            - httpd
+        environment:
+            DISPLAY: :0
+            XAUTHORITY: /tmp/xauth/Xauthority
+        image: quay.io/cvlibrary/geckodriver
+        logging:
+            driver: none
+        volumes:
+            - xauth:/tmp/xauth
+            - x11-unix:/tmp/.X11-unix
+    httpd:
+        image: trinitronx/python-simplehttpserver
+        logging:
+            driver: none
+        volumes:
+            - ./xt/www:/var/www
+    test:
+        build: .
+        depends_on:
+            - geckodriver
+        volumes:
+            - .:/root
+    xvfb:
+        command: -screen 0 1920x1080x24
+        image: quay.io/cvlibrary/xvfb
+        volumes:
+            - xauth:/tmp/xauth
+            - x11-unix:/tmp/.X11-unix
+
