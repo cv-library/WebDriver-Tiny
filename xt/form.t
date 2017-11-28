@@ -12,7 +12,11 @@ use WebDriver::Tiny;
 sub pick { map { splice @_, rand @_, 1 } 1 .. shift }
 sub roll { map { $_[ rand @_ ]         } 1 .. shift }
 
-my $drv = WebDriver::Tiny->new( host => 'geckodriver', port => 4444 );
+my $drv = WebDriver::Tiny->new(
+    capabilities => { 'moz:firefoxOptions' => { args => ['-headless'] } },
+    host         => 'geckodriver',
+    port         => 4444,
+);
 
 $drv->get('http://httpd:8080');
 
