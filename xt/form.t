@@ -42,8 +42,6 @@ $elem->send_keys('♥ ♦ ♣ ♠');
 
 is $elem->prop('value'), '♥ ♦ ♣ ♠', 'elem->send_keys';
 
-$drv->screenshot('foo.png');
-
 $elem->clear;
 
 is $elem->prop('value'), '', 'elem->clear';
