@@ -28,6 +28,10 @@ $drv->window_maximize;
 is_deeply $drv->window_rect, { qw/width 1366 height 768 x 10 y 20/ },
     'window_maximize';
 
+is_deeply $drv->windows, [ $drv->window ], 'windows & window';
+
+$drv->window_switch( $drv->window );
+
 #$drv->window_minimize;
 
 #is_deeply $drv->window_rect, { qw/width 1366 height 768 x 10 y 20/ },

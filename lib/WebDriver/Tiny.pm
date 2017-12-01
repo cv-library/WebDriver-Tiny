@@ -286,7 +286,7 @@ sub window_rect {
 sub window_switch {
     my ( $self, $handle ) = @_;
 
-    $self->_req( POST => '/window', { name => $handle } );
+    $self->_req( POST => '/window', { handle => $handle } );
 
     $self;
 }
