@@ -61,10 +61,21 @@ targetting, below are some examples:
 =head2 ChromeDriver
 
  my $drv = WebDriver::Tiny->new(
-     capabilities => {
-         chromeOptions => { binary => '/usr/bin/google-chrome' },
-     },
-     port => 9515,
+     capabilities => { chromeOptions => { binary => '/usr/bin/google-chrome' } },
+     port         => 9515,
+ );
+
+=head2 geckodriver
+
+On the command line:
+
+ geckodriver
+
+In Perl code:
+
+ my $drv = WebDriver::Tiny->new(
+     capabilities => { 'moz:firefoxOptions' => { args => ['-headless'] } },
+     port         => 4444,
  );
 
 =head2 PhantomJS
