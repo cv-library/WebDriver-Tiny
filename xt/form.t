@@ -8,6 +8,8 @@ use URI;
 use URI::QueryParam;
 use WebDriver::Tiny;
 
+binmode Test::More->builder->$_, ':encoding(UTF-8)' for qw/failure_output output/;
+
 # Perl 6 envy :-(
 sub pick { map { splice @_, rand @_, 1 } 1 .. shift }
 sub roll { map { $_[ rand @_ ]         } 1 .. shift }
@@ -40,11 +42,15 @@ my $elem = $drv->('input[type=text]');
 
 $elem->send_keys('♥ ♦ ♣ ♠');
 
-is $elem->prop('value'), '♥ ♦ ♣ ♠', 'elem->send_keys';
+is $elem->prop('value'), '♥ ♦ ♣ ♠', 'elem->send_keys("♥ ♦ ♣ ♠")';
 
 $elem->clear;
 
 is $elem->prop('value'), '', 'elem->clear';
+
+$elem->send_keys(1);
+
+is $elem->prop('value'), 1, 'elem->send_keys(1)';
 
 ok $drv->('#enabled')->enabled, 'enabled';
 ok !$drv->('#disabled')->enabled, 'not enabled';

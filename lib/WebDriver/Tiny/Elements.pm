@@ -66,7 +66,7 @@ sub screenshot {
 sub send_keys {
     my ( $self, $keys ) = @_;
 
-    $self->_req( POST => '/value', { text => $keys } );
+    $self->_req( POST => '/value', { text => "$keys" } );
 
     $self;
 }
