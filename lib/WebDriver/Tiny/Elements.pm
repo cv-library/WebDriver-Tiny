@@ -37,12 +37,6 @@ sub html { $_[0][0]->js( 'return arguments[0].outerHTML', $_[0] ) }
 
 *find = \&WebDriver::Tiny::find;
 
-sub move_to {
-    $_[0][0]->_req( POST => '/moveto', { element => $_[0][1] } );
-
-    $_[0];
-}
-
 sub screenshot {
     my ($self, $file) = @_;
 

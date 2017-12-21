@@ -63,7 +63,6 @@ is_deeply [ sort keys %WebDriver::Tiny::Elements:: ], [ qw/
     html
     import
     last
-    move_to
     prop
     rect
     screenshot

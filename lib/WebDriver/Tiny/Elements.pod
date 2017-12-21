@@ -14,10 +14,6 @@ WebDriver::Tiny::Elements
 
  $elems->clear;
 
-=head3 move_to
-
- $elems->move_to;
-
 =head3 send_keys
 
  $elems->send_keys('The quick brown fox jumps over the lazy dog');
