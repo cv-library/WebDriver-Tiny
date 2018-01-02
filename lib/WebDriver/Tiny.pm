@@ -182,9 +182,6 @@ sub find {
 
     my $method = $methods->{ $args{method} // '' } // 'css selector';
 
-    my $must_be_visible
-        = $method eq 'css selector' && $selector =~ s/:visible$//;
-
     # FIXME
     my $drv = ref $self eq 'WebDriver::Tiny::Elements' ? $self->[0] : $self;
 
@@ -200,7 +197,7 @@ sub find {
 
         @ids = grep {
             $drv->_req( GET => "/element/$_/displayed" )
-        } @ids if $must_be_visible;
+        } @ids if $args{visible};
 
         last if @ids;
 
