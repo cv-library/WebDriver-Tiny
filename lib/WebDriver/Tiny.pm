@@ -302,8 +302,13 @@ sub _req {
 
     my $value = eval { JSON::PP::decode_json( $reply->{content} )->{value} };
 
-    Carp::croak ref $self, ' - ', $value ? $value->{message} : $reply->{content}
-        unless $reply->{success};
+    unless ( $reply->{success} ) {
+        my $error = $value
+            ? $value->{message} || $value->{error} || $reply->{content}
+            : $reply->{content};
+
+        Carp::croak ref $self, ' - ', $error;
+    }
 
     $value;
 }
