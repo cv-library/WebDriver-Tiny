@@ -82,8 +82,10 @@ sub new($class, %args) {
         $args{base_url} // '',
     ], $class;
 
+    my $req_args = { desiredCapabilities => $args{capabilities} // {} };
+    $req_args->{_need_sessionId} = 1;
     my $reply = $self->_req(
-        POST => '', { desiredCapabilities => $args{capabilities} // {} } );
+        POST => '', $req_args );
 
     $self->[1] .= '/' . $reply->{sessionId};
 
@@ -274,14 +276,18 @@ sub window_switch($self, $handle) {
     $self;
 }
 
-sub _req($self, $method, $path, $args = undef) {
+sub _req($self, $method, $path, $args = {}) {
+    my $need_sessionId = delete $args->{_need_sessionId};
+
     my $reply = $self->[0]->request(
         $method,
         $self->[1] . $path,
-        { content => JSON::PP::encode_json( $args // {} ) },
+        { content => JSON::PP::encode_json( $args ) },
     );
 
-    my $value = eval { JSON::PP::decode_json( $reply->{content} )->{value} };
+    my $full_value = eval { JSON::PP::decode_json( $reply->{content} ) };
+    my $value = $full_value->{value};
+    $value->{sessionId} //= $full_value->{sessionId} if $need_sessionId;
 
     unless ( $reply->{success} ) {
         my $error = $value
