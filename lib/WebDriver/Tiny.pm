@@ -206,7 +206,6 @@ sub find($self, $selector, %args) {
 }
 
 my $js = sub($path, $self, $script, @args) {
-
     # Currently only takes the first ID in the collection, this should change.
     $_ = { ELEMENT => $_->[1] }
         for grep ref eq 'WebDriver::Tiny::Elements', @args;
@@ -226,16 +225,14 @@ sub get($self, $url) {
     $self;
 }
 
-sub screenshot {
-    my ( $self, $file ) = @_;
-
+sub screenshot($self, $file = undef) {
     require MIME::Base64;
 
     my $data = MIME::Base64::decode_base64(
         $self->_req( GET => '/screenshot' )
     );
 
-    if ( @_ == 2 ) {
+    if ( defined $file ) {
         open my $fh, '>', $file or die $!;
         print $fh $data;
         close $fh or die $!;
@@ -246,7 +243,7 @@ sub screenshot {
     $data;
 }
 
-sub user_agent { $js->( '/execute/sync', $_[0], 'return window.navigator.userAgent') }
+sub user_agent($self) { $js->( '/execute/sync', $self, 'return window.navigator.userAgent') }
 
 sub  window($self) { $self->_req( GET => '/window'         ) }
 sub windows($self) { $self->_req( GET => '/window/handles' ) }
@@ -271,15 +268,13 @@ sub window_rect {
     $self;
 }
 
-sub window_switch( $self, $handle) {
+sub window_switch($self, $handle) {
     $self->_req( POST => '/window', { handle => $handle } );
 
     $self;
 }
 
-sub _req {
-    my ( $self, $method, $path, $args ) = @_;
-
+sub _req($self, $method, $path, $args = undef) {
     my $reply = $self->[0]->request(
         $method,
         $self->[1] . $path,
@@ -299,6 +294,6 @@ sub _req {
     $value;
 }
 
-sub DESTROY { $_[0]->_req( DELETE => '' ) if $_[0][3] && $_[0][0] }
+sub DESTROY($self) { $self->_req( DELETE => '' ) if $self->[0] && $self->[3] }
 
 1;
