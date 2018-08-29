@@ -1,5 +1,10 @@
 version: '2'
 services:
+    chrome:
+        image: robcherry/docker-chromedriver:latest
+        environment:
+            CHROMEDRIVER_WHITELISTED_IPS: ""
+
     geckodriver:
         image: quay.io/cvlibrary/geckodriver
         logging:
@@ -15,6 +20,20 @@ services:
         depends_on:
             - geckodriver
             - httpd
+        environment:
+            WEBDRIVER_HOST: geckodriver
+            WEBDRIVER_CAPABILITIES: '{ "moz:firefoxOptions" : { "args" : ["-headless"] } }'
+        volumes:
+            - .:/root
+
+    test-chrome:
+        build: .
+        depends_on:
+            - chrome
+            - httpd
+        environment:
+            WEBDRIVER_HOST: chrome
+            WEBDRIVER_CAPABILITIES: '{ "chromeOptions" : { "binary" : "/usr/bin/google-chrome", "args": ["--headless"] } }'
         volumes:
             - .:/root
 
