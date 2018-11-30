@@ -2,6 +2,7 @@ use strict;
 use utf8;
 use warnings;
 
+use JSON::PP ();
 use Test::Deep;
 use Test::More;
 use URI;
@@ -15,8 +16,8 @@ sub pick { map { splice @_, rand @_, 1 } 1 .. shift }
 sub roll { map { $_[ rand @_ ]         } 1 .. shift }
 
 my $drv = WebDriver::Tiny->new(
-    capabilities => { 'moz:firefoxOptions' => { args => ['-headless'] } },
-    host         => 'geckodriver',
+    capabilities => JSON::PP::decode_json($ENV{WEBDRIVER_CAPABILITIES} || '{}'),
+    host         => $ENV{WEBDRIVER_HOST},
     port         => 4444,
 );
 

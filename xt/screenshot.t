@@ -1,13 +1,14 @@
 use strict;
 use warnings;
 
+use JSON::PP ();
 use File::Temp;
 use Test::More;
 use WebDriver::Tiny;
 
 my $drv = WebDriver::Tiny->new(
-    capabilities => { 'moz:firefoxOptions' => { args => ['-headless'] } },
-    host         => 'geckodriver',
+    capabilities => JSON::PP::decode_json($ENV{WEBDRIVER_CAPABILITIES} || '{}'),
+    host         => $ENV{WEBDRIVER_HOST},
     port         => 4444,
 );
 
