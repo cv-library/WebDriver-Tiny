@@ -1,7 +1,7 @@
 package WebDriver::Tiny 0.101;
 
 use 5.020;
-use feature qw/postderef signatures/;
+use feature qw/lexical_subs postderef signatures/;
 use warnings;
 no  warnings 'experimental';
 
