@@ -76,8 +76,7 @@ sub new($class, %args) {
     $args{path} //= '';
 
     my $self = bless [
-        # FIXME Keep alive can make PhantomJS return a 400 bad request :-S.
-        HTTP::Tiny->new( keep_alive => 0 ),
+        HTTP::Tiny->new,
         "http://$args{host}:$args{port}$args{path}/session",
         $args{base_url} // '',
     ], $class;
