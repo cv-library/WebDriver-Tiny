@@ -24,7 +24,7 @@ use WebDriver::Tiny::Elements;
 our @CARP_NOT = 'WebDriver::Tiny::Elements';
 
 sub import {
-    # From https://www.w3.org/TR/webdriver/#sendkeys
+    # https://www.w3.org/TR/webdriver/#sendkeys
     state $chars = {
         WD_NULL            => 57344, WD_CANCEL     => 57345,
         WD_HELP            => 57346, WD_BACK_SPACE => 57347,
@@ -108,9 +108,9 @@ sub  html($self) { $self->_req( GET => '/source' ) }
 sub title($self) { $self->_req( GET => '/title'  ) }
 sub   url($self) { $self->_req( GET => '/url'    ) }
 
-sub    back($self) { $self->_req( POST   => '/back'    ); $self }
-sub forward($self) { $self->_req( POST   => '/forward' ); $self }
-sub refresh($self) { $self->_req( POST   => '/refresh' ); $self }
+sub    back($self) { $self->_req( POST => '/back'    ); $self }
+sub forward($self) { $self->_req( POST => '/forward' ); $self }
+sub refresh($self) { $self->_req( POST => '/refresh' ); $self }
 
 sub status {
     # /status is the only path without the session prefix, so surpress it.
