@@ -5,6 +5,9 @@ use feature qw/postderef signatures/;
 use warnings;
 no  warnings 'experimental';
 
+# https://www.w3.org/TR/webdriver/#elements
+my sub ELEMENT_ID :prototype() {'element-6066-11e4-a52e-4f735466cecf'}
+
 # Allow "cute" $drv->('selector') syntax.
 #
 # $self->[4] contains a sub ref that closes over a weakened $self that calls
@@ -21,7 +24,7 @@ use WebDriver::Tiny::Elements;
 our @CARP_NOT = 'WebDriver::Tiny::Elements';
 
 sub import {
-    # From http://www.w3.org/TR/webdriver/#sendkeys
+    # From https://www.w3.org/TR/webdriver/#sendkeys
     state $chars = {
         WD_NULL            => 57344, WD_CANCEL     => 57345,
         WD_HELP            => 57346, WD_BACK_SPACE => 57347,
@@ -186,7 +189,7 @@ sub find($self, $selector, %args) {
             { using => $method, value => "$selector" },
         );
 
-        @ids = map values %$_, $reply->@*;
+        @ids = map $_->{+ELEMENT_ID}, @$reply;
 
         @ids = grep {
             $drv->_req( GET => "/element/$_/displayed" )
@@ -206,9 +209,8 @@ sub find($self, $selector, %args) {
 
 my $js = sub($path, $self, $script, @args) {
     # Currently only takes the first ID in the collection, this should change.
-    $_ = { ELEMENT => $_->[1] }
+    $_ = { ELEMENT_ID, $_->[1] }
         for grep ref eq 'WebDriver::Tiny::Elements', @args;
-
     $self->_req( POST => $path, { script => $script, args => \@args } );
 };
 

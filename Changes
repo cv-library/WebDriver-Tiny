@@ -1,3 +1,7 @@
+0.102 ???
+    - Continue to support the latest WebDriver spec as it evolves, older
+      servers may no longer work.
+
 0.101 2018-01-02
     - Try harder to get a meaningful error message.
     - Make use of subroutine signatures.
