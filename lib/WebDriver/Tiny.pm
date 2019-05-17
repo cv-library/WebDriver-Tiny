@@ -85,7 +85,9 @@ sub new($class, %args) {
     ], $class;
 
     my $reply = $self->_req(
-        POST => '', { desiredCapabilities => $args{capabilities} // {} } );
+        POST => '',
+        { capabilities => { alwaysMatch => $args{capabilities} // {} } },
+    );
 
     $self->[1] .= '/' . $reply->{sessionId};
 
