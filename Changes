@@ -1,4 +1,4 @@
-0.102 ???
+0.102 2019-05-17
     - Continue to support the latest WebDriver spec as it evolves, older
       servers may no longer work.
 
