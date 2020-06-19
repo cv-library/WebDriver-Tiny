@@ -61,7 +61,7 @@ targetting, below are some examples:
 =head2 ChromeDriver
 
  my $drv = WebDriver::Tiny->new(
-     capabilities => { chromeOptions => { binary => '/usr/bin/google-chrome' } },
+     DesiredCapabilities => { chromeOptions => { binary => '/usr/bin/google-chrome' } },
      port         => 9515,
  );
 
