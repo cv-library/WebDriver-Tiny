@@ -228,11 +228,11 @@ sub get($self, $url) {
     $self;
 }
 
-sub screenshot($self, $file = undef) {
+my $mime_data = sub ($method, $path, $self, $file, %args) {
     require MIME::Base64;
 
     my $data = MIME::Base64::decode_base64(
-        $self->_req( GET => '/screenshot' )
+        $self->_req( $method, $path, %args ? \%args : () )
     );
 
     if ( defined $file ) {
@@ -244,6 +244,19 @@ sub screenshot($self, $file = undef) {
     }
 
     $data;
+};
+
+sub print {
+    my $self = shift;
+    unshift @_, undef unless @_ % 2;
+    unshift @_, 'POST' => '/print', $self;
+    goto $mime_data;
+}
+
+sub screenshot {
+    push @_, undef if @_ == 1;
+    unshift @_, 'GET' => '/screenshot';
+    goto $mime_data;
 }
 
 sub user_agent($self) { $js->( '/execute/sync', $self, 'return window.navigator.userAgent') }

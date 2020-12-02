@@ -32,6 +32,7 @@ is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     js
     js_async
     new
+    print
     refresh
     screenshot
     status
@@ -46,7 +47,7 @@ is_deeply [ sort keys %WebDriver::Tiny:: ], [ qw/
     window_rect
     window_switch
     windows
-/ ], "WebDriver::Tiny has the correct stuff in it's namespace";
+/ ], "WebDriver::Tiny has the correct stuff in its namespace";
 
 is_deeply [ sort keys %WebDriver::Tiny::Elements:: ], [ qw/
     BEGIN
@@ -76,4 +77,4 @@ is_deeply [ sort keys %WebDriver::Tiny::Elements:: ], [ qw/
     text
     uniq
     visible
-/ ], "WebDriver::Tiny::Elements has the correct stuff in it's namespace";
+/ ], "WebDriver::Tiny::Elements has the correct stuff in its namespace";
