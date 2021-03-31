@@ -403,6 +403,70 @@ Get the URL of the current page.
 
 =head2 Window Management
 
+=head3 print
+
+ my $pdf_blob = $drv->print(%args);
+
+ $drv->print( '/tmp/foo.pdf', %args );
+
+Accepts an optional path to store the resulting PDF, and zero or more of the
+following key/value options:
+
+=over
+
+=item orientation
+
+The page orientation to use when printing. Possible values are 'portrait' and
+'landscape'. Defaults to 'portrait'.
+
+=item scale
+
+Page scale. Defaults to 1;
+
+=item background
+
+Whether background images should be included in the output. Defaults to false.
+
+=item width
+
+Page width in centimetres. Defaults to 21.59.
+
+=item height
+
+Page height in centimetres. Defaults to 27.94.
+
+=item top
+
+Page margin in centimetres from the top. Defaults to 1.
+
+=item bottom
+
+Page margin in centimetres from the bottom. Defaults to 1.
+
+=item left
+
+Page margin in centimetres from the left. Defaults to 1.
+
+=item right
+
+Page margin in centimetres from the right. Defaults to 1.
+
+=item shrinkToFit
+
+Whether the PDF should be shrunk to fit the page. Defaults to true.
+
+Setting this overrides any specified page width.
+
+=item pageRanges
+
+The range of pages to print, either as an array or as a string with the lower
+and upper bounds separated by a hyphen. When using the string format, one of
+the ends might be left blank to indicate that there is no such bound, as in
+C<-5> to print the first five pages, or C<5-> to print from the 5th page
+onwards.
+
+=back
+
 =head3 screenshot
 
  my $png_blob = $drv->screenshot;
