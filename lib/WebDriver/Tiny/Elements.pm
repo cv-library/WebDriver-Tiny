@@ -1,4 +1,4 @@
-package WebDriver::Tiny::Elements 0.104;
+package WebDriver::Tiny::Elements 0.105;
 
 use 5.020;
 use feature qw/postderef signatures/;
